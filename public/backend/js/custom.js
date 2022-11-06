@@ -16,6 +16,10 @@
 // ------------------------------------------------------------------------------ end
 
 
+
+//multiple delete data click ina a single button
+
+
 // /  ### globaly delete data with sweet alert message
 $(document).on("click", ".delete", function (e) {
     e.preventDefault();
@@ -80,6 +84,8 @@ $(document).on("click", ".delete", function (e) {
         },
     });
 });
+
+// ----------------------------------------------------------------------------------- end
 // Defaults sweet alert js
 var swalInit = swal.mixin({
     buttonsStyling: false,
@@ -90,10 +96,9 @@ var swalInit = swal.mixin({
         input: "form-control",
     },
 });
-// ----------------------------------------------------------------------------------- end
+// --------------------------------
 
-
-//alif dudu mara khai prince dudu ni a jai
+//side bar toggle
 // $(function () {
 //     $('.nav-toggle').on('click', function (e) {
 //         $('.sideNav').toggleClass('open');

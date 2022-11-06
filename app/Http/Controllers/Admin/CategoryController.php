@@ -27,7 +27,7 @@ class CategoryController extends Controller
                 ->addIndexColumn()
 
                 ->addColumn('checkbox', function ($item) {
-                    return '<input type="checkbox" id="manual_entry_' . $item->id . '" class="form-check-input" value="' . $item->id . '" />';
+                    return '<input  type="checkbox" name="rowId[]" id="manual_entry_' . $item->id . '" class="form-check-input" value="' . $item->id . '" />';
                 })
                 ->addColumn('action', function ($row) {
                     $btn = '<div class="d-inline-flex">
@@ -148,5 +148,19 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         Category::find($id)->delete();
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function multiDelete(Request $request)
+    {
+        $rowIds = $request->rowIds;
+        Category::whereIn('id', $rowIds)->delete();
+
+        return response()->json("Selected Category(s) deleted successfully.", 200);
     }
 }
