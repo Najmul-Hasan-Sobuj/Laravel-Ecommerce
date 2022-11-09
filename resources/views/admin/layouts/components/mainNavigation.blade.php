@@ -39,6 +39,9 @@
                 <li class="nav-item"><a href="{{ route('provider.categories.childCategory.index') }}"
                         class="{{ request()->is('provider/categories/childCategory*') ? 'nav-link active' : 'nav-link' }}">
                         Child Category</a></li>
+                <li class="nav-item"><a href="{{ route('provider.brand.index') }}"
+                        class="{{ request()->is('provider/brand*') ? 'nav-link active' : 'nav-link' }}">
+                        Brand</a></li>
             </ul>
         </li>
     </ul>

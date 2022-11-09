@@ -27,4 +27,5 @@ Route::group(['middleware' => ['isadmin', 'auth'], 'prefix' => 'provider', 'as' 
         Route::resource('subCategory', App\Http\Controllers\Admin\subCategoryController::class);
         Route::resource('childCategory', App\Http\Controllers\Admin\childCategoryController::class);
     });
+    Route::resource('brand', App\Http\Controllers\Admin\BrandController::class);
 });
