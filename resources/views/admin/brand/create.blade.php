@@ -58,7 +58,8 @@
                                                 <div class="mb-4">
                                                     <label class="col-form-label">Brand Logo: </label>
                                                     <input type="file" class="form-control" name="photos[]" multiple>
-                                                    <div class="form-text">Accepts all file types</div>
+                                                    <div class="form-text"><span class="text-danger">Accepts only png, jpeg,
+                                                            jpg types</span></div>
                                                 </div>
 
                                                 <div class="text-end">

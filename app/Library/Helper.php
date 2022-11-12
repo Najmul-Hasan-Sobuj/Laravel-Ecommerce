@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 
@@ -16,54 +17,39 @@ class Helper
         $fileExtention    = $mainFile->getClientOriginalExtension();
         $fileOriginalName = $mainFile->getClientOriginalName();
         $file_size        = $mainFile->getSize();
-
-        $validExtentions = array('jpeg', 'jpg', 'png');
-        $path            = public_path($imgPath);
-        $currentTime     = Str::random(8);
+        $path            = $imgPath;
+        $currentTime     = 'img_' . Str::random(16) . time();
         $fileName        = $currentTime . '.' . $fileExtention;
 
-        if (in_array($fileExtention, $validExtentions)) {
-            // $imgDimention = true;
-            // if ($reqWidth > 0 || $reqHeight > 0) {
-            //     $imgSizeArr = getimagesize($mainFile);
-            //     $imgWidth = $imgSizeArr[0];
-            //     $imgHeight = $imgSizeArr[1];
-            //     if ($reqWidth > 0 && $reqHeight > 0 && ($imgWidth != $reqWidth || $imgHeight != $reqHeight)) {
-            //         $imgDimention = false;
-            //         $dimentionErrMsg = "Image size must be " . $reqWidth . "px * " . $reqHeight . "px";
-            //     } elseif ($reqWidth > 0 && $imgWidth != $reqWidth) {
-            //         $imgDimention = false;
-            //         $dimentionErrMsg = "Image width must be " . $reqWidth . "px";
-            //     } elseif ($reqHeight > 0 && $imgHeight != $reqHeight) {
-            //         $imgDimention = false;
-            //         $dimentionErrMsg = "Image height must be " . $reqHeight . "px";
-            //     }
-            // }
+        // $imgDimention = true;
+        // if ($reqWidth > 0 || $reqHeight > 0) {
+        //     $imgSizeArr = getimagesize($mainFile);
+        //     $imgWidth = $imgSizeArr[0];
+        //     $imgHeight = $imgSizeArr[1];
+        //     if ($reqWidth > 0 && $reqHeight > 0 && ($imgWidth != $reqWidth || $imgHeight != $reqHeight)) {
+        //         $imgDimention = false;
+        //         $dimentionErrMsg = "Image size must be " . $reqWidth . "px * " . $reqHeight . "px";
+        //     } elseif ($reqWidth > 0 && $imgWidth != $reqWidth) {
+        //         $imgDimention = false;
+        //         $dimentionErrMsg = "Image width must be " . $reqWidth . "px";
+        //     } elseif ($reqHeight > 0 && $imgHeight != $reqHeight) {
+        //         $imgDimention = false;
+        //         $dimentionErrMsg = "Image height must be " . $reqHeight . "px";
+        //     }
+        // }
 
-            // if ($imgDimention) {
-            $mainFile->move($path, $fileName);
-            //create instance
-            $img = Image::make($path . '/' . $fileName);
-            $img = Image::make($path . '/' . $fileName)->resize($reqWidth, $reqHeight)->save($path . '/requestImg/' . $fileName);
-            //resize image
-            $img->resize(40, null, function ($constraint) {
-                $constraint->aspectRatio();
-            });
-            $img->save($path . '/thumb/' . $fileName);
+        $mainFile->storeAs($path, 'Original_' . $fileName);
+        $img = Image::make($mainFile)->resize($reqWidth, $reqHeight)->save($path . '/requestImg/' . 'Resize_' . $fileName);
+        $img->resize(40, null, function ($constraint) {
+            $constraint->aspectRatio();
+        })->save($path . '/thumb/' . $fileName);
 
-            $output['status']             = 1;
-            $output['file_name']          = $fileName;
-            $output['file_original_name'] = $fileOriginalName;
-            $output['file_extention']     = $fileExtention;
-            $output['file_size']          = $file_size;
-            // } else {
-            //     $output['errors'] = $dimentionErrMsg;
-            //     $output['status'] = 0;
-            // }
-        } else {
-            $output['errors'] = $fileExtention . ' File is not support';
-            $output['status'] = 0;
-        }
+        $output['status']             = 1;
+        $output['file_name']          = $fileName;
+        $output['file_original_name'] = $fileOriginalName;
+        $output['file_extention']     = $fileExtention;
+        $output['file_size']          = $file_size;
+
         return $output;
     }
 

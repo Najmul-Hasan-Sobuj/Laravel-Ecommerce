@@ -40,33 +40,58 @@ class BrandController extends Controller
      */
     public function store(Request $request)
     {
-
-        $validator = Validator::make($request->all(), [
-            'brand_name' => 'required',
-            'photos'     => 'required|mimes:png,jpg,jpeg|max:2048',
-        ]);
+        // dimensions:max_width=4096,max_height=4096 ||image width and height 
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'brand_name' => 'required|max:30',
+                'photos.*'   => 'required|image|mimes:png,jpg,jpeg|max:5000',
+            ],
+            [
+                'required' => 'The: attribute field is mandatory.',
+                'photos.*' => [
+                    'max'      => 'The image field must be smaller than 5 MB.',
+                ],
+                'image'    => 'The file must be an image.',
+                'mimes' => 'The :attribute must be a file of type: PNG - JPEG - JPG'
+            ],
+            [
+                'brand_name' => 'Brand Name',
+                'photos.*'   => 'Image',
+            ],
+        );
         if ($validator->passes()) {
             $mainFiles = $request->file('photos');
-            $imgPath = 'backend/images/uploads';
-            foreach ($mainFiles as $mainFile) {
-                $globalFunImg =  Helper::uploadsFunction($mainFile, $imgPath, 230, 227);
-                if ($globalFunImg['status'] == 1) {
-                    Brand::create([
-                        'brand_name' => $request->brand_name,
-                        'brand_slug' => Str::slug($request->brand_name, '-'),
-                        'brand_logo' => $globalFunImg['file_name'],
-                    ]);
-                } else {
-                    $output['messege'] = $globalFunImg['errors'];
-                    Toastr::warning($output['messege']);
-                    return redirect()->back();
+            $imgPath = 'public/';
+            if (empty($mainFiles)) {
+                Brand::create([
+                    'brand_name' => $request->brand_name,
+                    'brand_slug' => Str::slug($request->brand_name, '-'),
+                ]);
+            } else {
+                foreach ($mainFiles as $mainFile) {
+                    $globalFunImg =  Helper::uploadsFunction($mainFile, $imgPath, 230, 227);
+                    if ($globalFunImg['status'] == 1) {
+                        Brand::create([
+                            'brand_name' => $request->brand_name,
+                            'brand_slug' => Str::slug($request->brand_name, '-'),
+                            'brand_logo' => $globalFunImg['file_name'],
+                        ]);
+                    } else {
+                        $output['messege'] = $globalFunImg['errors'];
+                        Toastr::warning($output['messege']);
+                        return redirect()->back();
+                    }
                 }
             }
+
+
+
             Toastr::success('Data Inserted Successfully');
         } else {
             $messages = $validator->messages();
             foreach ($messages->all() as $message) {
-                Toastr::error($message, 'Failed', ['timeOut' => 10000]);
+                Toastr::error($message, 'Failed', ['timeOut' => 30000]);
             }
         }
         return redirect()->back();
