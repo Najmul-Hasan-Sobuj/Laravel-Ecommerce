@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Traits\imageDirectory;
-
 use Helper;
 use App\Models\Brand;
 use Illuminate\Support\Str;
@@ -11,11 +9,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\File;
 
 class BrandController extends Controller
 {
-
     /**
      * Display a listing of the resource.
      *
@@ -42,7 +38,6 @@ class BrandController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-
 
     public function store(Request $request)
     {
