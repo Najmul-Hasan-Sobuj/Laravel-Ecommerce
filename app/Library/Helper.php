@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 
 
 /**
@@ -11,8 +12,18 @@ use Intervention\Image\Facades\Image;
  */
 class Helper
 {
+    public static function imageDirectory()
+    {
+        if (!File::isDirectory("public/requestImg/")) {
+            File::makeDirectory("public/requestImg/", 0777, true, true);
+        }
+        if (!File::isDirectory("public/thumb/")) {
+            File::makeDirectory("public/thumb/", 0777, true, true);
+        }
+    }
     public static function uploadsFunction($mainFile, $imgPath, $reqWidth = false, $reqHeight = false)
     {
+
 
         $fileExtention    = $mainFile->getClientOriginalExtension();
         $fileOriginalName = $mainFile->getClientOriginalName();
