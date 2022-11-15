@@ -24,7 +24,10 @@ class Helper
         }
     }
 
-    public static function uploadsFunction($mainFile, $imgPath, $reqWidth = false, $reqHeight = false)
+    /**
+     * image path generate or already have.
+     */
+    public static function imageUploadsFunction($mainFile, $imgPath, $reqWidth = false, $reqHeight = false)
     {
         $fileExtention    = $mainFile->getClientOriginalExtension();
         $fileOriginalName = $mainFile->getClientOriginalName();

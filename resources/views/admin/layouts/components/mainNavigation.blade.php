@@ -44,5 +44,12 @@
                         Brand</a></li>
             </ul>
         </li>
+        <li class="nav-item">
+            <a href="{{ route('provider.pages.index') }}"
+                class="{{ request()->is('provider/pages.index*') ? 'nav-link active' : 'nav-link' }}">
+                <i class="far fa-file-word"></i>
+                <span>Pages</span>
+            </a>
+        </li>
     </ul>
 </div>

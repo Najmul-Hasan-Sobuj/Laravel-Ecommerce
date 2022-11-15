@@ -372,9 +372,10 @@
     <script src="{{ asset('backend/js/vendor/forms/selects/select2.min.js') }}"></script>
     <script src="{{ asset('backend/js/vendor/forms/inputs/maxlength.min.js') }}"></script>
     <script src="{{ asset('backend/js/vendor/notifications/sweet_alert.min.js') }}"></script>
-
+    <script src="{{ asset('backend/js/vendor/editors/ckeditor/ckeditor_classic.js') }}"></script>
     <script src="{{ asset('backend/js/app.js') }}"></script>
-
+    <script src="{{ asset('backend/demo/pages/editor_ckeditor_classic.js') }}"></script>
+    <script src="{{ asset('backend/demo/pages/form_select2.js') }}"></script>
     <script src="{{ asset('backend/demo/pages/extra_sweetalert.js') }}"></script>
     <script src="{{ asset('backend/demo/pages/form_controls_extended.js') }}"></script>
     <script src="{{ asset('backend/demo/pages/form_layouts.js') }}"></script>

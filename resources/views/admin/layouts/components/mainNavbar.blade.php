@@ -445,7 +445,7 @@
                         <span class="badge bg-primary rounded-pill ms-auto">26</span>
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
+                    <a href="{{ route('provider.admin.accountSetting') }}" class="dropdown-item">
                         <i class="ph-gear me-2"></i>
                         Account settings
                     </a>

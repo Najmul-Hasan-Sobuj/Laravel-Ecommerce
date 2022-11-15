@@ -47,7 +47,7 @@ class BrandController extends Controller
             $request->all(),
             [
                 'brand_name' => 'required|max:30',
-                'photos.*'   => 'required|image|mimes:png,jpg,jpeg|max:5000',
+                'photos.*'   => 'required|image|mimes:png,jpg,jpeg|max:5000', //dimensions:min_width=250,min_height=500
             ],
             [
                 'required' => 'The: attribute field is mandatory.',
@@ -62,6 +62,7 @@ class BrandController extends Controller
                 'photos.*'   => 'Image',
             ],
         );
+
         if ($validator->passes()) {
             $mainFiles = $request->file('photos');
             $imgPath = 'public/';
@@ -72,7 +73,7 @@ class BrandController extends Controller
                 ]);
             } else {
                 foreach ($mainFiles as $mainFile) {
-                    $globalFunImg =  Helper::uploadsFunction($mainFile, $imgPath, 230, 227);
+                    $globalFunImg =  Helper::imageUploadsFunction($mainFile, $imgPath, 230, 227);
                     if ($globalFunImg['status'] == 1) {
                         Brand::create([
                             'brand_name' => $request->brand_name,

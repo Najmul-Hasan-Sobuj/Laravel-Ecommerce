@@ -28,4 +28,11 @@ Route::group(['middleware' => ['isadmin', 'auth'], 'prefix' => 'provider', 'as' 
         Route::resource('childCategory', App\Http\Controllers\Admin\childCategoryController::class);
     });
     Route::resource('brand', App\Http\Controllers\Admin\BrandController::class);
+
+    // all account settings
+    Route::get('settings', [App\Http\Controllers\Admin\SettingController::class, 'accountSetting'])->name('admin.accountSetting');
+    Route::put('seo', [App\Http\Controllers\Admin\SettingController::class, 'seoUpdate'])->name('seo.update');
+    Route::put('smtp', [App\Http\Controllers\Admin\SettingController::class, 'smtpUpdate'])->name('smtp.update');
+
+    Route::resource('pages', App\Http\Controllers\Admin\CreatePageController::class);
 });
