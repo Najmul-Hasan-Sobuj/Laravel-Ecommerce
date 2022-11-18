@@ -64,7 +64,8 @@
                     <div class="collapse show">
                         <div class="card-body">
                             <div class="mb-3">
-                                <button class="btn btn-sm btn-flat-danger" id="multi-delete">Delete
+                                <button class="btn btn-sm btn-flat-danger" id="multi-delete" formId="categoryTable"
+                                    multiDeleteLinkUrl="{{ route('provider.categories.categoryMultiDelete') }}">Delete
                                     Selected Items</button>
 
                                 <a href="{{ route('provider.categories.category.create') }}"
@@ -188,58 +189,58 @@
                     }
                 });
 
-                //multiple delete data click one single button
-                $('#multi-delete').on('click', function() {
-                    var rowIds = [];
-                    $('#categoryTable input[name="rowId[]"]:checked').each(function() {
-                        rowIds[rowIds.length] = (this.checked ? $(this).val() : "");
-                    });
-                    console.log('rowIds ', rowIds);
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
-                    swalInit.fire({
-                        title: "Are you sure?",
-                        text: "You will not be able to recover this imaginary file!",
-                        icon: "warning",
-                        showCancelButton: true,
-                        confirmButtonText: "Yes, delete it!",
+                // //multiple delete data click one single button
+                // $('#multi-delete').on('click', function() {
+                //     var rowIds = [];
+                //     $('#categoryTable input[name="rowId[]"]:checked').each(function() {
+                //         rowIds[rowIds.length] = (this.checked ? $(this).val() : "");
+                //     });
+                //     console.log('rowIds ', rowIds);
+                //     $.ajaxSetup({
+                //         headers: {
+                //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                //         }
+                //     });
+                //     swalInit.fire({
+                //         title: "Are you sure?",
+                //         text: "You will not be able to recover this imaginary file!",
+                //         icon: "warning",
+                //         showCancelButton: true,
+                //         confirmButtonText: "Yes, delete it!",
 
-                        preConfirm: function() {
-                            $.ajax({
-                                url: "{{ route('provider.categories.categoryMultiDelete') }}",
-                                method: "POST",
-                                data: {
-                                    'rowIds': rowIds
-                                },
-                                dataType: 'json',
-                                success: function(data) {
-                                    swalInit.fire({
-                                        title: "Deleted!",
-                                        text: "This data has been deleted!",
-                                        confirmButtonColor: "#66BB6A",
-                                        icon: "success",
-                                        type: "success",
-                                        preConfirm: function() {
-                                            location.reload();
-                                        },
-                                    });
-                                },
-                                error: function(jqXHR, textStatus, errorThrown) {
-                                    swalInit.fire({
-                                        title: "Oops...",
-                                        text: "Seems you couldn't submit form for a longtime. Please refresh your form & try again",
-                                        icon: "error",
-                                        allowEscapeKey: false,
-                                        allowEnterKey: false,
-                                    });
-                                },
-                            });
-                        },
-                    });
-                });
+                //         preConfirm: function() {
+                //             $.ajax({
+                //                 url: "{{ route('provider.categories.categoryMultiDelete') }}",
+                //                 method: "POST",
+                //                 data: {
+                //                     'rowIds': rowIds
+                //                 },
+                //                 dataType: 'json',
+                //                 success: function(data) {
+                //                     swalInit.fire({
+                //                         title: "Deleted!",
+                //                         text: "This data has been deleted!",
+                //                         confirmButtonColor: "#66BB6A",
+                //                         icon: "success",
+                //                         type: "success",
+                //                         preConfirm: function() {
+                //                             location.reload();
+                //                         },
+                //                     });
+                //                 },
+                //                 error: function(jqXHR, textStatus, errorThrown) {
+                //                     swalInit.fire({
+                //                         title: "Oops...",
+                //                         text: "Seems you couldn't submit form for a longtime. Please refresh your form & try again",
+                //                         icon: "error",
+                //                         allowEscapeKey: false,
+                //                         allowEnterKey: false,
+                //                     });
+                //                 },
+                //             });
+                //         },
+                //     });
+                // });
 
             });
         </script>

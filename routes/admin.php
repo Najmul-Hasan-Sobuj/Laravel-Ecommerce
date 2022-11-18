@@ -33,6 +33,7 @@ Route::group(['middleware' => ['isadmin', 'auth'], 'prefix' => 'provider', 'as' 
     Route::get('settings', [App\Http\Controllers\Admin\SettingController::class, 'accountSetting'])->name('admin.accountSetting');
     Route::put('seo', [App\Http\Controllers\Admin\SettingController::class, 'seoUpdate'])->name('seo.update');
     Route::put('smtp', [App\Http\Controllers\Admin\SettingController::class, 'smtpUpdate'])->name('smtp.update');
+    Route::put('webSetting', [App\Http\Controllers\Admin\SettingController::class, 'webSettingUpdate'])->name('webSetting.update');
 
     Route::resource('pages', App\Http\Controllers\Admin\CreatePageController::class);
 });

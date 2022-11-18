@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Page;
 use Brian2694\Toastr\Facades\Toastr;
 use DataTables;
 use Helper;
@@ -11,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
-class CreatePageController extends Controller
+class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -30,7 +29,7 @@ class CreatePageController extends Controller
      */
     public function create()
     {
-        return view('admin.pages.create');
+        //
     }
 
     /**
@@ -41,32 +40,7 @@ class CreatePageController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'page_name' => 'required|max:40',
-            ],
-            [
-                'page_name' => 'Page Name',
-            ],
-        );
-
-        if ($validator->passes()) {
-            Page::create([
-                'page_position' => $request->page_position,
-                'page_name'     => $request->page_name,
-                'page_slug'     => Str::slug($request->page_title, '-'),
-                'page_title'    => $request->page_title,
-                'description'   => $request->description,
-            ]);
-            Toastr::success('Data Inserted Successfully');
-        } else {
-            $messages = $validator->messages();
-            foreach ($messages->all() as $message) {
-                Toastr::error($message, 'Failed', ['timeOut' => 10000]);
-            }
-        }
-        return redirect()->back();
+        //
     }
 
     /**

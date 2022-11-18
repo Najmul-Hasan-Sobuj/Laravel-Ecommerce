@@ -13,13 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('pages', function (Blueprint $table) {
+        Schema::create('warehouses', function (Blueprint $table) {
             $table->id();
-            $table->integer('page_position')->nullable();
-            $table->string('page_name')->nullable();
-            $table->string('page_slug')->nullable();
-            $table->string('page_title')->nullable();
-            $table->longText('description')->nullable();
+            $table->string('name')->nullable();
+            $table->string('address')->nullable();
+            $table->string('phone')->nullable();
             $table->timestamps();
             $table->softDeletes(); // <-- This will add a deleted_at field
         });
@@ -32,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pages');
+        Schema::dropIfExists('warehouses');
     }
 };

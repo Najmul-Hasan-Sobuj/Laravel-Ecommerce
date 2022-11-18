@@ -45,13 +45,17 @@
                                                 <div class="row">
                                                     <div class="col-lg-4">
                                                         <div class="mb-4">
-                                                            <label class="form-label">Page Position: <span
-                                                                    class="text-danger">*</span></label>
-                                                            <input type="text" id="page_position" name="page_position"
-                                                                class="form-control maxlength-options" maxlength="40"
-                                                                placeholder="Enter Your Page Position">
+                                                            <label class="form-label">Page Position: </label>
+                                                            <select class="form-control select" name="page_position"
+                                                                data-placeholder="Select your page position"
+                                                                data-minimum-results-for-search="Infinity">
+                                                                <option></option>
+                                                                <option value="1">Line One</option>
+                                                                <option value="2">Line Two</option>
+                                                            </select>
                                                         </div>
                                                     </div>
+
                                                     <div class="col-lg-4">
                                                         <div class="mb-4">
                                                             <label class="form-label">Page Name: <span
@@ -61,6 +65,7 @@
                                                                 placeholder="Enter Your Page Name" required>
                                                         </div>
                                                     </div>
+
                                                     <div class="col-lg-4">
                                                         <div class="mb-4">
                                                             <label class="form-label">Page Title: <span
@@ -70,6 +75,7 @@
                                                                 placeholder="Enter Your Page Title">
                                                         </div>
                                                     </div>
+
                                                 </div>
 
                                                 <div class="mb-4">

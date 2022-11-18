@@ -98,6 +98,64 @@ var swalInit = swal.mixin({
 });
 // --------------------------------
 
+
+//multiple delete data click one single button
+// $('#multi-delete').on('click', function () {
+$(document).on("click", "#multi-delete", function (e) {
+    let formId = $(this).attr("formId");
+    let multiDeleteLinkUrl = $(this).attr("multiDeleteLinkUrl");
+
+    var rowIds = [];
+    $('#' + formId + ' input[name="rowId[]"]:checked').each(function () {
+        rowIds[rowIds.length] = (this.checked ? $(this).val() : "");
+    });
+    console.log('rowIds ', rowIds);
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    swalInit.fire({
+        title: "Are you sure?",
+        text: "You will not be able to recover this imaginary file!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+
+        preConfirm: function () {
+            $.ajax({
+                url: multiDeleteLinkUrl,
+                method: "POST",
+                data: {
+                    'rowIds': rowIds
+                },
+                dataType: 'json',
+                success: function (data) {
+                    swalInit.fire({
+                        title: "Deleted!",
+                        text: "This data has been deleted!",
+                        confirmButtonColor: "#66BB6A",
+                        icon: "success",
+                        type: "success",
+                        preConfirm: function () {
+                            location.reload();
+                        },
+                    });
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    swalInit.fire({
+                        title: "Oops...",
+                        text: "Seems you couldn't submit form for a longtime. Please refresh your form & try again",
+                        icon: "error",
+                        allowEscapeKey: false,
+                        allowEnterKey: false,
+                    });
+                },
+            });
+        },
+    });
+});
+
 //side bar toggle
 // $(function () {
 //     $('.nav-toggle').on('click', function (e) {

@@ -125,123 +125,121 @@
 @endsection
 
 @push('script')
-    @once
-        <script type="text/javascript">
-            $(function category() {
-                var table = $('#categoryTable').DataTable({
-                    processing: false,
-                    // searching: true,
-                    // bPaginate: true,
-                    // paging: true,
-                    // ordering: true,
-                    // info: true,
-                    serverSide: true,
-                    ajax: "{{ route('provider.categories.category.index') }}",
-                    columns: [{
-                            data: 'checkbox',
-                            name: 'checkbox',
-                            orderable: false,
-                            searchable: false,
-                            exportable: false,
-                            printable: true,
+    <script type="text/javascript">
+        $(function category() {
+            var table = $('#categoryTable').DataTable({
+                processing: false,
+                // searching: true,
+                // bPaginate: true,
+                // paging: true,
+                // ordering: true,
+                // info: true,
+                serverSide: true,
+                ajax: "{{ route('provider.categories.category.index') }}",
+                columns: [{
+                        data: 'checkbox',
+                        name: 'checkbox',
+                        orderable: false,
+                        searchable: false,
+                        exportable: false,
+                        printable: true,
 
-                        },
-                        {
-                            orderable: false,
-                            data: 'DT_RowIndex',
-                            name: 'DT_RowIndex'
-                        },
-                        {
-                            data: 'category_name',
-                            name: 'category_name'
-                        },
-                        {
-                            data: 'action',
-                            name: 'action',
-                            orderable: false,
-                            searchable: false
-                        },
-                    ],
+                    },
+                    {
+                        orderable: false,
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex'
+                    },
+                    {
+                        data: 'category_name',
+                        name: 'category_name'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    },
+                ],
+            });
+
+            // Handle click on "Select all" control
+            $('#select-all-checkbox').on('click', function() {
+                // Get all rows with search applied
+                var rows = table.rows({
+                    'search': 'applied'
+                }).nodes();
+                // Check/uncheck checkboxes for all rows in the table
+                $('input[type="checkbox"]', rows).prop('checked', this.checked);
+            });
+
+            // Handle click on checkbox to set state of "Select all" control
+            $('#categoryTable tbody').on('change', 'input[type="checkbox"]', function() {
+                // If checkbox is not checked
+                if (!this.checked) {
+                    var el = $('#select-all-checkbox').get(0);
+                    // If "Select all" control is checked and has 'indeterminate' property
+                    if (el && el.checked && ('indeterminate' in el)) {
+                        // Set visual state of "Select all" control
+                        // as 'indeterminate'
+                        el.indeterminate = true;
+                    }
+                }
+            });
+
+            //multiple delete data click one single button
+            $('#multi-delete').on('click', function() {
+                var rowIds = [];
+                $('#categoryTable input[name="rowId[]"]:checked').each(function() {
+                    rowIds[rowIds.length] = (this.checked ? $(this).val() : "");
                 });
-
-                // Handle click on "Select all" control
-                $('#select-all-checkbox').on('click', function() {
-                    // Get all rows with search applied
-                    var rows = table.rows({
-                        'search': 'applied'
-                    }).nodes();
-                    // Check/uncheck checkboxes for all rows in the table
-                    $('input[type="checkbox"]', rows).prop('checked', this.checked);
-                });
-
-                // Handle click on checkbox to set state of "Select all" control
-                $('#categoryTable tbody').on('change', 'input[type="checkbox"]', function() {
-                    // If checkbox is not checked
-                    if (!this.checked) {
-                        var el = $('#select-all-checkbox').get(0);
-                        // If "Select all" control is checked and has 'indeterminate' property
-                        if (el && el.checked && ('indeterminate' in el)) {
-                            // Set visual state of "Select all" control
-                            // as 'indeterminate'
-                            el.indeterminate = true;
-                        }
+                console.log('rowIds ', rowIds);
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
                 });
+                swalInit.fire({
+                    title: "Are you sure?",
+                    text: "You will not be able to recover this imaginary file!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Yes, delete it!",
 
-                //multiple delete data click one single button
-                $('#multi-delete').on('click', function() {
-                    var rowIds = [];
-                    $('#categoryTable input[name="rowId[]"]:checked').each(function() {
-                        rowIds[rowIds.length] = (this.checked ? $(this).val() : "");
-                    });
-                    console.log('rowIds ', rowIds);
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
-                    swalInit.fire({
-                        title: "Are you sure?",
-                        text: "You will not be able to recover this imaginary file!",
-                        icon: "warning",
-                        showCancelButton: true,
-                        confirmButtonText: "Yes, delete it!",
-
-                        preConfirm: function() {
-                            $.ajax({
-                                url: "{{ route('provider.categories.categoryMultiDelete') }}",
-                                method: "POST",
-                                data: {
-                                    'rowIds': rowIds
-                                },
-                                dataType: 'json',
-                                success: function(data) {
-                                    swalInit.fire({
-                                        title: "Deleted!",
-                                        text: "This data has been deleted!",
-                                        confirmButtonColor: "#66BB6A",
-                                        icon: "success",
-                                        type: "success",
-                                        preConfirm: function() {
-                                            location.reload();
-                                        },
-                                    });
-                                },
-                                error: function(jqXHR, textStatus, errorThrown) {
-                                    swalInit.fire({
-                                        title: "Oops...",
-                                        text: "Seems you couldn't submit form for a longtime. Please refresh your form & try again",
-                                        icon: "error",
-                                        allowEscapeKey: false,
-                                        allowEnterKey: false,
-                                    });
-                                },
-                            });
-                        },
-                    });
+                    preConfirm: function() {
+                        $.ajax({
+                            url: "{{ route('provider.categories.categoryMultiDelete') }}",
+                            method: "POST",
+                            data: {
+                                'rowIds': rowIds
+                            },
+                            dataType: 'json',
+                            success: function(data) {
+                                swalInit.fire({
+                                    title: "Deleted!",
+                                    text: "This data has been deleted!",
+                                    confirmButtonColor: "#66BB6A",
+                                    icon: "success",
+                                    type: "success",
+                                    preConfirm: function() {
+                                        location.reload();
+                                    },
+                                });
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                swalInit.fire({
+                                    title: "Oops...",
+                                    text: "Seems you couldn't submit form for a longtime. Please refresh your form & try again",
+                                    icon: "error",
+                                    allowEscapeKey: false,
+                                    allowEnterKey: false,
+                                });
+                            },
+                        });
+                    },
                 });
-
             });
-        </script>
-    @endonce
+
+        });
+    </script>
 @endpush
