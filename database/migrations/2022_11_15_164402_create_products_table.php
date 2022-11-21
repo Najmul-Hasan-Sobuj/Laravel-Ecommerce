@@ -21,6 +21,8 @@ return new class extends Migration
             $table->integer('brand_id')->nullable();
             $table->string('name');
             $table->string('code');
+            $table->string('color');
+            $table->string('size');
             $table->string('unit')->nullable();
             $table->string('tags')->nullable();
             $table->string('video')->nullable();

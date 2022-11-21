@@ -28,6 +28,14 @@ Route::group(['middleware' => ['isadmin', 'auth'], 'prefix' => 'provider', 'as' 
         Route::resource('childCategory', App\Http\Controllers\Admin\childCategoryController::class);
     });
     Route::resource('brand', App\Http\Controllers\Admin\BrandController::class);
+    Route::resource('wareHouse', App\Http\Controllers\Admin\WarehouseController::class);
+    Route::post('wareHouse/multi-delete', [App\Http\Controllers\Admin\WarehouseController::class, 'multiDelete'])->name('wareHouseMultiDelete');
+
+    Route::resource('coupon', App\Http\Controllers\Admin\CouponController::class);
+    Route::post('coupon/multi-delete', [App\Http\Controllers\Admin\CouponController::class, 'multiDelete'])->name('couponMultiDelete');
+
+    Route::resource('pickUpPoint', App\Http\Controllers\Admin\PickUpPointController::class);
+    Route::post('pickUpPoint/multi-delete', [App\Http\Controllers\Admin\PickUpPointController::class, 'multiDelete'])->name('pickUpPointMultiDelete');
 
     // all account settings
     Route::get('settings', [App\Http\Controllers\Admin\SettingController::class, 'accountSetting'])->name('admin.accountSetting');

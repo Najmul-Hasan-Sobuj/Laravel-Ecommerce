@@ -13,11 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('warehouses', function (Blueprint $table) {
+        Schema::create('pick_up_points', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('address');
-            $table->string('phone')->nullable();
+            $table->string('phone_one');
+            $table->string('phone_two')->nullable();
             $table->timestamps();
             $table->softDeletes(); // <-- This will add a deleted_at field
         });
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('warehouses');
+        Schema::dropIfExists('pick_up_points');
     }
 };

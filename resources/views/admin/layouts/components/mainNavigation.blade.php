@@ -42,6 +42,23 @@
                 <li class="nav-item"><a href="{{ route('provider.brand.index') }}"
                         class="{{ request()->is('provider/brand*') ? 'nav-link active' : 'nav-link' }}">
                         Brand</a></li>
+                <li class="nav-item"><a href="{{ route('provider.wareHouse.index') }}"
+                        class="{{ request()->is('provider/wareHouse*') ? 'nav-link active' : 'nav-link' }}">
+                        Warehouse</a></li>
+            </ul>
+        </li>
+        <li class="nav-item nav-item-submenu">
+            <a href="#" class="nav-link">
+                <i class="icon-gift"></i>
+                <span>Offer</span>
+            </a>
+            <ul class="nav-group-sub collapse @if (request()->is('provider*')) show @endif">
+                <li class="nav-item"><a href="{{ route('provider.coupon.index') }}"
+                        class="{{ request()->is('provider/coupon*') ? 'nav-link active' : 'nav-link' }}">
+                        Coupon</a></li>
+                {{-- <li class="nav-item"><a href="{{ route('provider.eCampaign .index') }}"
+                        class="{{ request()->is('provider/eCampaign*') ? 'nav-link active' : 'nav-link' }}">
+                        Campaign</a></li> --}}
             </ul>
         </li>
         <li class="nav-item">
@@ -49,6 +66,13 @@
                 class="{{ request()->is('provider/pages.index*') ? 'nav-link active' : 'nav-link' }}">
                 <i class="far fa-file-word"></i>
                 <span>Pages</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('provider.pickUpPoint.index') }}"
+                class="{{ request()->is('provider/pickUpPoint.index*') ? 'nav-link active' : 'nav-link' }}">
+                <i class="icon-truck"></i>
+                <span>Pick-Up Point</span>
             </a>
         </li>
     </ul>

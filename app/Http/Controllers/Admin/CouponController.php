@@ -3,14 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Warehouse;
+use App\Models\Coupon;
 use Brian2694\Toastr\Facades\Toastr;
 use DataTables;
+use Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
-class WarehouseController extends Controller
+class CouponController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,7 +21,7 @@ class WarehouseController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Warehouse::get();
+            $data = Coupon::get();
             return Datatables::of($data)
                 ->addIndexColumn()
 
@@ -29,10 +30,10 @@ class WarehouseController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     $btn = '<div class="d-inline-flex">
-                                <a href="' . route('provider.wareHouse.edit', [$row->id]) . '" class="text-primary">
+                                <a href="' . route('provider.coupon.edit', [$row->id]) . '" class="text-primary">
                                     <i class="icon-pencil"></i>
                                 </a>
-                                <a href="' . route('provider.wareHouse.destroy', [$row->id]) . '" class="text-danger delete mx-2">
+                                <a href="' . route('provider.coupon.destroy', [$row->id]) . '" class="text-danger delete mx-2">
                                     <i class="icon-trash"></i>
                                 </a>
                                 <a href="#" class="text-teal">
@@ -44,7 +45,7 @@ class WarehouseController extends Controller
                 ->rawColumns(['action', 'checkbox'])
                 ->make(true);
         }
-        return view('admin.wareHouse.list');
+        return view('admin.coupon.list');
     }
 
     /**
@@ -54,7 +55,7 @@ class WarehouseController extends Controller
      */
     public function create()
     {
-        return view('admin.wareHouse.create');
+        return view('admin.coupon.create');
     }
 
     /**
@@ -66,15 +67,20 @@ class WarehouseController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name'    => 'required|string|max: 40',
-            'address' => 'required|string|max: 150',
+            'coupon_code'   => 'required|string|max: 10',
+            'valid_date'    => 'required|date',
+            'type'          => 'required',
+            'coupon_amount' => 'required|max: 10',
+            'status'        => 'required',
         ]);
 
         if ($validator->passes()) {
-            Warehouse::create([
-                'name'    => $request->name,
-                'address' => $request->address,
-                'phone'   => $request->phone,
+            Coupon::create([
+                'coupon_code'   => $request->coupon_code,
+                'valid_date'    => $request->valid_date,
+                'type'          => $request->type,
+                'coupon_amount' => $request->coupon_amount,
+                'status'        => $request->status,
             ]);
             Toastr::success('Data Inserted Successfully');
         } else {
@@ -105,8 +111,8 @@ class WarehouseController extends Controller
      */
     public function edit($id)
     {
-        $data['wareHouse'] = Warehouse::find($id);
-        return view('admin.wareHouse.update', $data);
+        $data['coupon'] = Coupon::find($id);
+        return view('admin.coupon.update', $data);
     }
 
     /**
@@ -119,17 +125,22 @@ class WarehouseController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'name'    => 'required|string|max: 40',
-            'address' => 'required|string|max: 150',
+            'coupon_code'   => 'required|string|max: 10',
+            'valid_date'    => 'required|date',
+            'type'          => 'required',
+            'coupon_amount' => 'required|max: 10',
+            'status'        => 'required',
 
         ]);
         if ($validator->passes()) {
-            Warehouse::find($id)->update([
-                'name'    => $request->name,
-                'address' => $request->address,
-                'phone'   => $request->phone,
+            Coupon::find($id)->update([
+                'coupon_code'   => $request->coupon_code,
+                'valid_date'    => $request->valid_date,
+                'type'          => $request->type,
+                'coupon_amount' => $request->coupon_amount,
+                'status'        => $request->status,
             ]);
-            Toastr::success('WareHouse has been updated');
+            Toastr::success('Coupon has been updated');
         } else {
             $messages = $validator->messages();
             foreach ($messages->all() as $message) {
@@ -147,7 +158,7 @@ class WarehouseController extends Controller
      */
     public function destroy($id)
     {
-        Warehouse::find($id)->delete();
+        Coupon::find($id)->delete();
     }
 
     /**
@@ -159,8 +170,8 @@ class WarehouseController extends Controller
     public function multiDelete(Request $request)
     {
         $rowIds = $request->rowIds;
-        Warehouse::whereIn('id', $rowIds)->delete();
+        Coupon::whereIn('id', $rowIds)->delete();
 
-        return response()->json("Selected Warehouse(s) deleted successfully.", 200);
+        return response()->json("Selected Coupon(s) deleted successfully.", 200);
     }
 }

@@ -27,6 +27,28 @@
 
     <link href="{{ asset('backend/css/toastr.min.css') }}" rel="stylesheet" type="text/css">
 
+    <style>
+        .dataTables_length,
+        .dataTables_info {
+            margin-right: 0.3125rem !important;
+            margin-left: 0.3125rem !important;
+            margin-top: 0.3125rem !important;
+            float: left !important;
+        }
+
+        .dataTables_filter,
+        .dataTables_paginate {
+            margin-right: 0.3125rem !important;
+            margin-left: 0.3125rem !important;
+            margin-top: 0.3125rem !important;
+            float: right !important;
+        }
+
+        .table-responsive {
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+        }
+    </style>
 </head>
 
 <body>

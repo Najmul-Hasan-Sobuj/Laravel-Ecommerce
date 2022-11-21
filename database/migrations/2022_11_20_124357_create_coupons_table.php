@@ -13,11 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('warehouses', function (Blueprint $table) {
+        Schema::create('coupons', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('address');
-            $table->string('phone')->nullable();
+            $table->string('coupon_code');
+            $table->string('valid_date');
+            $table->string('type');
+            $table->integer('coupon_amount');
+            $table->string('status');
             $table->timestamps();
             $table->softDeletes(); // <-- This will add a deleted_at field
         });
@@ -30,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('warehouses');
+        Schema::dropIfExists('coupons');
     }
 };
