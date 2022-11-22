@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Helper;
+use DataTables;
 use App\Models\Brand;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -17,8 +18,33 @@ class BrandController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->ajax()) {
+            $data = Brand::get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+
+                ->addColumn('checkbox', function ($item) {
+                    return '<input  type="checkbox" name="rowId[]" id="manual_entry_' . $item->id . '" class="form-check-input" value="' . $item->id . '" />';
+                })
+                ->addColumn('action', function ($row) {
+                    $btn = '<div class="d-inline-flex">
+                                <a href="' . route('provider.brand.edit', [$row->id]) . '" class="text-primary">
+                                    <i class="icon-pencil"></i>
+                                </a>
+                                <a href="' . route('provider.brand.destroy', [$row->id]) . '" class="text-danger delete mx-2">
+                                    <i class="icon-trash"></i>
+                                </a>
+                                <a href="#" class="text-teal">
+                                    <i class="icon-file-eye"></i>
+                                </a>
+                            </div>';
+                    return $btn;
+                })
+                ->rawColumns(['action', 'checkbox'])
+                ->make(true);
+        }
         return view('admin.brand.list');
     }
 
@@ -65,7 +91,7 @@ class BrandController extends Controller
 
         if ($validator->passes()) {
             $mainFiles = $request->file('photos');
-            $imgPath = 'public/';
+            $imgPath = storage_path('app/public/');
             if (empty($mainFiles)) {
                 Brand::create([
                     'brand_name' => $request->brand_name,
@@ -120,18 +146,6 @@ class BrandController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -139,6 +153,20 @@ class BrandController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Brand::find($id)->delete();
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function multiDelete(Request $request)
+    {
+        $rowIds = $request->rowIds;
+        Brand::whereIn('id', $rowIds)->delete();
+
+        return response()->json("Selected Brand(s) deleted successfully.", 200);
     }
 }

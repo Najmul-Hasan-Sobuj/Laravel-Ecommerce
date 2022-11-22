@@ -121,10 +121,10 @@ class SettingController extends Controller
                     ],
                     [
                         'logo'    => [
-                            'max' => 'The image field must be smaller than 1 MB.',
+                            'max' => 'The image field must be smaller than 5 MB.',
                         ],
                         'favicon' => [
-                            'max' => 'The image field must be smaller than 1 MB.',
+                            'max' => 'The image field must be smaller than 5 MB.',
                         ],
                         'image' => 'The file must be an image.',
                         'mimes' => 'The: attribute must be a file of type: PNG - JPEG - JPG'
@@ -151,10 +151,9 @@ class SettingController extends Controller
         $validator = Validator::make($request->all(), $validator);
 
         if ($validator->passes()) {
-            // if (isset($request->logo)) {
             $logoMainFile = $request->logo;
             $faviconMainFile = $request->favicon;
-            $uploadPath = 'public/';
+            $uploadPath = storage_path('app/public/');
             if (isset($logoMainFile)) {
                 $globalFunImgLogo = Helper::singleImageUpload($logoMainFile, $uploadPath, 230, 227);
             } else {
@@ -168,8 +167,6 @@ class SettingController extends Controller
             }
 
             if (!empty($webSetting)) {
-                // if ($request->logo != $webSetting->logo) {
-                // }
                 if ($globalFunImgLogo['status'] == 1) {
                     File::delete(public_path($uploadPath . '/') . $webSetting->logo);
                     File::delete(public_path($uploadPath . '/thumb/') . $webSetting->logo);
@@ -215,22 +212,6 @@ class SettingController extends Controller
                 ]);
                 Toastr::success('Data has been created');
             }
-            // } else {
-            //     $webSetting->update([
-            //         'currency'      => $request->currency,
-            //         'phone_one'     => $request->phone_one,
-            //         'phone_two'     => $request->phone_two,
-            //         'main_email'    => $request->main_email,
-            //         'support_email' => $request->support_email,
-            //         'address'       => $request->address,
-            //         'facebook'      => $request->facebook,
-            //         'twitter'       => $request->twitter,
-            //         'instagram'     => $request->instagram,
-            //         'linkedin'      => $request->linkedin,
-            //         'youtube'       => $request->youtube,
-            //     ]);
-            //     Toastr::success('Data has been updated');
-            // }
         } else {
             $messages = $validator->messages();
             foreach ($messages->all() as $message) {

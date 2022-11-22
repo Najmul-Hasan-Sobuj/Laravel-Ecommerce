@@ -27,7 +27,10 @@ Route::group(['middleware' => ['isadmin', 'auth'], 'prefix' => 'provider', 'as' 
         Route::resource('subCategory', App\Http\Controllers\Admin\subCategoryController::class);
         Route::resource('childCategory', App\Http\Controllers\Admin\childCategoryController::class);
     });
+
     Route::resource('brand', App\Http\Controllers\Admin\BrandController::class);
+    Route::post('brand/multi-delete', [App\Http\Controllers\Admin\BrandController::class, 'multiDelete'])->name('brandMultiDelete');
+
     Route::resource('wareHouse', App\Http\Controllers\Admin\WarehouseController::class);
     Route::post('wareHouse/multi-delete', [App\Http\Controllers\Admin\WarehouseController::class, 'multiDelete'])->name('wareHouseMultiDelete');
 

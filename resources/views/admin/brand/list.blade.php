@@ -1,28 +1,6 @@
 @extends('admin.layouts.app')
 
 @section('admincontent')
-    <style>
-        .dataTables_length,
-        .dataTables_info {
-            margin-right: 0.3125rem !important;
-            margin-left: 0.3125rem !important;
-            margin-top: 0.3125rem !important;
-            float: left !important;
-        }
-
-        .dataTables_filter,
-        .dataTables_paginate {
-            margin-right: 0.3125rem !important;
-            margin-left: 0.3125rem !important;
-            margin-top: 0.3125rem !important;
-            float: right !important;
-        }
-
-        .table-responsive {
-            overflow-x: hidden;
-            -webkit-overflow-scrolling: touch;
-        }
-    </style>
     <!-- Main content -->
     <div class="content-wrapper">
 
@@ -64,7 +42,8 @@
                     <div class="collapse show">
                         <div class="card-body">
                             <div class="mb-3">
-                                <button class="btn btn-sm btn-flat-danger" id="multi-delete">Delete
+                                <button class="btn btn-sm btn-flat-danger" id="multi-delete" formId="brandTable"
+                                    multiDeleteLinkUrl="{{ route('provider.brandMultiDelete') }}">Delete
                                     Selected Items</button>
 
                                 <a href="{{ route('provider.brand.create') }}"
@@ -74,7 +53,7 @@
                                     </span>
                                     Add New
                                 </a>
-                                <a href="{{ route('provider.categories.category.create') }}"
+                                <a href="{{ route('provider.brand.create') }}"
                                     class="btn btn-flat-info btn-labeled btn-labeled-start btn-sm float-end"><span
                                         class="btn-labeled-icon bg-info text-white">
                                         <i class="icon-trash"></i>
@@ -88,17 +67,18 @@
 
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="mb-0 float-start">Category Table</h5>
+                        <h5 class="mb-0 float-start">WareHouse Table</h5>
                     </div>
 
                     <div class="table-responsive">
-                        <table id="categoryTable" class="table table-bordered table-striped table-hover" style="width:100%">
+                        <table id="brandTable" class="table table-bordered table-striped table-hover" style="width:100%">
                             <thead>
                                 <tr>
                                     <th width="5%"><input id="select-all-checkbox" type="checkbox"
                                             class="form-check-input"></th>
-                                    <th width="10%">SL</th>
-                                    <th width="80%">Category Name</th>
+                                    <th width="5%">SL</th>
+                                    <th width="75%">Brand Name</th>
+                                    <th width="10%">Brand Logo</th>
                                     <th class="text-center" width="5%">Action</th>
                                 </tr>
                             </thead>
@@ -126,8 +106,8 @@
 
 @push('script')
     <script type="text/javascript">
-        $(function category() {
-            var table = $('#categoryTable').DataTable({
+        $(function wareHouse() {
+            var table = $('#brandTable').DataTable({
                 processing: false,
                 // searching: true,
                 // bPaginate: true,
@@ -135,7 +115,7 @@
                 // ordering: true,
                 // info: true,
                 serverSide: true,
-                ajax: "{{ route('provider.categories.category.index') }}",
+                ajax: "{{ route('provider.brand.index') }}",
                 columns: [{
                         data: 'checkbox',
                         name: 'checkbox',
@@ -151,8 +131,15 @@
                         name: 'DT_RowIndex'
                     },
                     {
-                        data: 'category_name',
-                        name: 'category_name'
+                        data: 'brand_name',
+                        name: 'brand_name'
+                    },
+                    {
+                        data: 'brand_logo',
+                        name: 'brand_logo',
+                        render: function(data, type, full, meta) {
+                            return `<span><img src="public/storage/${data}" height="40"></span>`;
+                        }
                     },
                     {
                         data: 'action',
@@ -174,7 +161,7 @@
             });
 
             // Handle click on checkbox to set state of "Select all" control
-            $('#categoryTable tbody').on('change', 'input[type="checkbox"]', function() {
+            $('#brandTable tbody').on('change', 'input[type="checkbox"]', function() {
                 // If checkbox is not checked
                 if (!this.checked) {
                     var el = $('#select-all-checkbox').get(0);
@@ -186,60 +173,6 @@
                     }
                 }
             });
-
-            //multiple delete data click one single button
-            $('#multi-delete').on('click', function() {
-                var rowIds = [];
-                $('#categoryTable input[name="rowId[]"]:checked').each(function() {
-                    rowIds[rowIds.length] = (this.checked ? $(this).val() : "");
-                });
-                console.log('rowIds ', rowIds);
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                swalInit.fire({
-                    title: "Are you sure?",
-                    text: "You will not be able to recover this imaginary file!",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonText: "Yes, delete it!",
-
-                    preConfirm: function() {
-                        $.ajax({
-                            url: "{{ route('provider.categories.categoryMultiDelete') }}",
-                            method: "POST",
-                            data: {
-                                'rowIds': rowIds
-                            },
-                            dataType: 'json',
-                            success: function(data) {
-                                swalInit.fire({
-                                    title: "Deleted!",
-                                    text: "This data has been deleted!",
-                                    confirmButtonColor: "#66BB6A",
-                                    icon: "success",
-                                    type: "success",
-                                    preConfirm: function() {
-                                        location.reload();
-                                    },
-                                });
-                            },
-                            error: function(jqXHR, textStatus, errorThrown) {
-                                swalInit.fire({
-                                    title: "Oops...",
-                                    text: "Seems you couldn't submit form for a longtime. Please refresh your form & try again",
-                                    icon: "error",
-                                    allowEscapeKey: false,
-                                    allowEnterKey: false,
-                                });
-                            },
-                        });
-                    },
-                });
-            });
-
         });
     </script>
 @endpush

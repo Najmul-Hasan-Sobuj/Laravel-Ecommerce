@@ -16,11 +16,11 @@ class Helper
      */
     public static function imageDirectory()
     {
-        if (!File::isDirectory("public/requestImg/")) {
-            File::makeDirectory("public/requestImg/", 0777, true, true);
+        if (!File::isDirectory(storage_path("app/public/requestImg/"))) {
+            File::makeDirectory(storage_path("app/public/requestImg/", 0777, true, true));
         }
-        if (!File::isDirectory("public/thumb/")) {
-            File::makeDirectory("public/thumb/", 0777, true, true);
+        if (!File::isDirectory(storage_path("app/public/thumb/"))) {
+            File::makeDirectory(storage_path("app/public/thumb/", 0777, true, true));
         }
     }
 
@@ -40,11 +40,9 @@ class Helper
         $currentTime      = 'img_' . Str::random(16) . time();
         $fileName         = $currentTime . '.' . $fileExtention;
 
-        $mainFile->storeAs($path, 'Original_' . $fileName);
+        $mainFile->storeAs('public/', 'Original_' . $fileName);
         $img = Image::make($mainFile)->resize($reqWidth, $reqHeight)->save($path . '/requestImg/' . 'Resize_' . $fileName);
-        $img->resize(40, null, function ($constraint) {
-            $constraint->aspectRatio();
-        })->save($path . '/thumb/' . $fileName);
+        $img->resize(146, 204)->save($path . '/thumb/' . $fileName);
 
         $output['status']             = 1;
         $output['file_name']          = $fileName;
@@ -67,11 +65,9 @@ class Helper
         $currentTime      = 'img_' . Str::random(16) . time();
         $fileName         = $currentTime . '.' . $fileExtention;
 
-        $mainFile->storeAs($path, 'Original_' . $fileName);
+        $mainFile->storeAs('public/', 'Original_' . $fileName);
         $img = Image::make($mainFile)->resize($reqWidth, $reqHeight)->save($path . '/requestImg/' . 'Resize_' . $fileName);
-        $img->resize(40, null, function ($constraint) {
-            $constraint->aspectRatio();
-        })->save($path . '/thumb/' . $fileName);
+        $img->resize(146, 204)->save($path . '/thumb/' . $fileName);
 
         $output['status']             = 1;
         $output['file_name']          = $fileName;
