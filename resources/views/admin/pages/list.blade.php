@@ -9,7 +9,7 @@
 
             <!-- Page header -->
             @include('admin.layouts.components.pageHeader')
-            <!-- /page header -->
+            <!-- /pages header -->
 
             <!-- Content area -->
             <div class="content">
@@ -19,6 +19,10 @@
                         <h6 class="mb-sm-0">Switch and controls</h6>
                         <div class="ms-sm-auto">
                             <div class="hstack gap-3 justify-content-between">
+                                <label class="form-check form-switch form-check-reverse">
+                                    <input type="checkbox" class="form-check-input" checked>
+                                    <span class="form-check-label">Enable</span>
+                                </label>
 
                                 <div class="hstack gap-2">
                                     <a class="text-body" data-card-action="collapse">
@@ -38,18 +42,18 @@
                     <div class="collapse show">
                         <div class="card-body">
                             <div class="mb-3">
-                                <button class="btn btn-sm btn-flat-danger" id="multi-delete" formId="wareHouseTable"
-                                    multiDeleteLinkUrl="{{ route('provider.wareHouseMultiDelete') }}">Delete
+                                <button class="btn btn-sm btn-flat-danger" id="multi-delete" formId="pagesTable"
+                                    multiDeleteLinkUrl="{{ route('provider.pagesMultiDelete') }}">Delete
                                     Selected Items</button>
 
-                                <a href="{{ route('provider.wareHouse.create') }}"
+                                <a href="{{ route('provider.pages.create') }}"
                                     class="btn btn-flat-success btn-labeled btn-labeled-start btn-sm float-end mx-1"><span
                                         class="btn-labeled-icon bg-success text-white">
                                         <i class="icon-plus2"></i>
                                     </span>
                                     Add New
                                 </a>
-                                <a href="{{ route('provider.wareHouse.create') }}"
+                                <a href="{{ route('provider.pages.create') }}"
                                     class="btn btn-flat-info btn-labeled btn-labeled-start btn-sm float-end"><span
                                         class="btn-labeled-icon bg-info text-white">
                                         <i class="icon-trash"></i>
@@ -63,20 +67,19 @@
 
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="mb-0 float-start">WareHouse Table</h5>
+                        <h5 class="mb-0 float-start">Page Table</h5>
                     </div>
 
                     <div class="table-responsive">
-                        <table id="wareHouseTable" class="table table-bordered table-striped table-hover"
-                            style="width:100%">
+                        <table id="pagesTable" class="table table-bordered table-striped table-hover" style="width:100%">
                             <thead>
                                 <tr>
                                     <th width="5%"><input id="select-all-checkbox" type="checkbox"
                                             class="form-check-input"></th>
                                     <th width="5%">SL</th>
-                                    <th width="20%">Name</th>
-                                    <th width="50%">Address</th>
-                                    <th width="15%">Phone</th>
+                                    <th width="20%">Page Position</th>
+                                    <th width="50%">Page Name</th>
+                                    <th width="15%">Page Title</th>
                                     <th class="text-center" width="5%">Action</th>
                                 </tr>
                             </thead>
@@ -104,8 +107,8 @@
 
 @push('script')
     <script type="text/javascript">
-        $(function wareHouse() {
-            var table = $('#wareHouseTable').DataTable({
+        $(function pages() {
+            var table = $('#pagesTable').DataTable({
                 processing: false,
                 // searching: true,
                 // bPaginate: true,
@@ -113,7 +116,7 @@
                 // ordering: true,
                 // info: true,
                 serverSide: true,
-                ajax: "{{ route('provider.wareHouse.index') }}",
+                ajax: "{{ route('provider.pages.index') }}",
                 columns: [{
                         data: 'checkbox',
                         name: 'checkbox',
@@ -129,16 +132,16 @@
                         name: 'DT_RowIndex'
                     },
                     {
-                        data: 'name',
-                        name: 'name'
+                        data: 'page_position',
+                        name: 'page_position'
                     },
                     {
-                        data: 'address',
-                        name: 'address'
+                        data: 'page_name',
+                        name: 'page_name'
                     },
                     {
-                        data: 'phone',
-                        name: 'phone'
+                        data: 'page_title',
+                        name: 'page_title'
                     },
                     {
                         data: 'action',
@@ -160,7 +163,7 @@
             });
 
             // Handle click on checkbox to set state of "Select all" control
-            $('#categoryTable tbody').on('change', 'input[type="checkbox"]', function() {
+            $('#pagesTable tbody').on('change', 'input[type="checkbox"]', function() {
                 // If checkbox is not checked
                 if (!this.checked) {
                     var el = $('#select-all-checkbox').get(0);

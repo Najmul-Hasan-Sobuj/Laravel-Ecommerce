@@ -18,9 +18,60 @@ class CreatePageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            $data = Page::get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+
+                ->addColumn('checkbox', function ($item) {
+                    return '<input  type="checkbox" name="rowId[]" id="manual_entry_' . $item->id . '" class="form-check-input" value="' . $item->id . '" />';
+                })
+                ->addColumn('action', function ($row) {
+                    $btn = '<div class="d-inline-flex">
+                                <a href="' . route('provider.pages.edit', [$row->id]) . '" class="text-primary">
+                                    <i class="icon-pencil"></i>
+                                </a>
+                                <a href="' . route('provider.pages.destroy', [$row->id]) . '" class="text-danger delete mx-2">
+                                    <i class="icon-trash"></i>
+                                </a>
+                                <a href="#" class="text-teal">
+                                    <i class="icon-file-eye"></i>
+                                </a>
+                            </div>';
+                    return $btn;
+                })
+                ->rawColumns(['action', 'checkbox'])
+                ->make(true);
+        }
+        return view('admin.pages.list');
+        if ($request->ajax()) {
+            $data = Page::get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+
+                ->addColumn('checkbox', function ($item) {
+                    return '<input  type="checkbox" name="rowId[]" id="manual_entry_' . $item->id . '" class="form-check-input" value="' . $item->id . '" />';
+                })
+                ->addColumn('action', function ($row) {
+                    $btn = '<div class="d-inline-flex">
+                                <a href="' . route('provider.page.edit', [$row->id]) . '" class="text-primary">
+                                    <i class="icon-pencil"></i>
+                                </a>
+                                <a href="' . route('provider.page.destroy', [$row->id]) . '" class="text-danger delete mx-2">
+                                    <i class="icon-trash"></i>
+                                </a>
+                                <a href="#" class="text-teal">
+                                    <i class="icon-file-eye"></i>
+                                </a>
+                            </div>';
+                    return $btn;
+                })
+                ->rawColumns(['action', 'checkbox'])
+                ->make(true);
+        }
+        return view('admin.page.list');
     }
 
     /**
@@ -88,7 +139,8 @@ class CreatePageController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data['pages'] = Page::find($id);
+        return view('admin.pages.update', $data);
     }
 
     /**
@@ -100,7 +152,31 @@ class CreatePageController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'page_name' => 'required|max:40',
+            ],
+            [
+                'page_name' => 'Page Name',
+            ],
+        );
+        if ($validator->passes()) {
+            Page::find($id)->update([
+                'page_position' => $request->page_position,
+                'page_name'     => $request->page_name,
+                'page_slug'     => Str::slug($request->page_title, '-'),
+                'page_title'    => $request->page_title,
+                'description'   => $request->description,
+            ]);
+            Toastr::success('Page has been updated');
+        } else {
+            $messages = $validator->messages();
+            foreach ($messages->all() as $message) {
+                Toastr::error($message, 'Failed', ['timeOut' => 30000]);
+            }
+        }
+        return redirect()->back();
     }
 
     /**
@@ -111,6 +187,20 @@ class CreatePageController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Page::find($id)->delete();
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function multiDelete(Request $request)
+    {
+        $rowIds = $request->rowIds;
+        Page::whereIn('id', $rowIds)->delete();
+
+        return response()->json("Selected Page(s) deleted successfully.", 200);
     }
 }

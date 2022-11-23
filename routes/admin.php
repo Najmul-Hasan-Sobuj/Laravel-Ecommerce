@@ -47,4 +47,5 @@ Route::group(['middleware' => ['isadmin', 'auth'], 'prefix' => 'provider', 'as' 
     Route::put('webSetting', [App\Http\Controllers\Admin\SettingController::class, 'webSettingUpdate'])->name('webSetting.update');
 
     Route::resource('pages', App\Http\Controllers\Admin\CreatePageController::class);
+    Route::post('pages/multi-delete', [App\Http\Controllers\Admin\CreatePageController::class, 'multiDelete'])->name('pagesMultiDelete');
 });
