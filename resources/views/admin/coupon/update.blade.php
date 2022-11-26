@@ -70,13 +70,10 @@
                                                     <select class="form-control select" id="type" name="type"
                                                         data-placeholder="Select your type"
                                                         data-minimum-results-for-search="Infinity">
-                                                        <option value="{{ $coupon->type }}"
-                                                            @if ($coupon->type == 'Fixed' || $coupon->type == 'Percentage') selected @endif>
-                                                            {{ $coupon->type }}
-                                                        <option value="Fixed">Fixed
-                                                        </option>
-                                                        <option value="Percentage">Percentage</option>
-                                                        </option>
+                                                        <option @if ($coupon->type == 'Fixed') selected @endif
+                                                            value="Fixed">Fixed </option>
+                                                        <option @if ($coupon->type == 'Percentage') selected @endif
+                                                            value="Percentage">Percentage</option>
                                                     </select>
                                                 </div>
 

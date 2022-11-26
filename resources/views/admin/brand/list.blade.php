@@ -138,7 +138,7 @@
                         data: 'brand_logo',
                         name: 'brand_logo',
                         render: function(data, type, full, meta) {
-                            return `<span><img src="public/storage/${data}" height="40"></span>`;
+                            return `<span><img src="{{ asset('storage/thumb/${data}') }}" height="40"></span>`;
                         }
                     },
                     {
