@@ -37,11 +37,11 @@ class Helper
         $fileOriginalName = $mainFile->getClientOriginalName();
         $file_size        = $mainFile->getSize();
         $path             = $imgPath;
-        $currentTime      = 'img_' . Str::random(16) . time();
+        $currentTime      = Str::random(16) . time();
         $fileName         = $currentTime . '.' . $fileExtention;
 
-        $mainFile->storeAs('public/', 'Original_' . $fileName);
-        $img = Image::make($mainFile)->resize($reqWidth, $reqHeight)->save($path . '/requestImg/' . 'Resize_' . $fileName);
+        $mainFile->storeAs('public/', $fileName);
+        $img = Image::make($mainFile)->resize($reqWidth, $reqHeight)->save($path . '/requestImg/' . $fileName);
         $img->resize(146, 204)->save($path . '/thumb/' . $fileName);
 
         $output['status']             = 1;
@@ -62,11 +62,11 @@ class Helper
         $fileOriginalName = $mainFile->getClientOriginalName();
         $file_size        = $mainFile->getSize();
         $path             = $imgPath;
-        $currentTime      = 'img_' . Str::random(16) . time();
+        $currentTime      = Str::random(16) . time();
         $fileName         = $currentTime . '.' . $fileExtention;
 
-        $mainFile->storeAs('public/', 'Original_' . $fileName);
-        $img = Image::make($mainFile)->resize($reqWidth, $reqHeight)->save($path . '/requestImg/' . 'Resize_' . $fileName);
+        $mainFile->storeAs('public/', $fileName);
+        $img = Image::make($mainFile)->resize($reqWidth, $reqHeight)->save($path . '/requestImg/' . $fileName);
         $img->resize(146, 204)->save($path . '/thumb/' . $fileName);
 
         $output['status']             = 1;

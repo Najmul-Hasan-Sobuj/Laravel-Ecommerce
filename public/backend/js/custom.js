@@ -6,7 +6,6 @@
  *
  * ------------------------------------------------------------------------------ */
 
-
 // prevent-multiple-submits disable
 (function () {
     $('.from-prevent-multiple-submits').on('submit', function () {
@@ -14,7 +13,6 @@
     })
 })();
 // ------------------------------------------------------------------------------ end
-
 
 
 //multiple delete data click ina a single button
@@ -156,7 +154,21 @@ $(document).on("click", "#multi-delete", function (e) {
     });
 });
 
+
+
 //side bar toggle
+// function classToggle() {
+//     const navs = document.querySelectorAll('.nav-group-sub')
+
+//     navs.forEach(nav => nav.classList.toggle('show'));
+// }
+
+// document.querySelector('.nav-item-submenu')
+//     .addEventListener('click', classToggle);
+
+
+//side bar toggle
+
 // $(function () {
 //     $('.nav-toggle').on('click', function (e) {
 //         $('.sideNav').toggleClass('open');
@@ -168,7 +180,6 @@ $(document).on("click", "#multi-delete", function (e) {
 //     $('*:not(.nav-toggle)').on('click', function () {
 //         $('.sideNav').removeClass('open');
 //     });
-
 // });
 
 

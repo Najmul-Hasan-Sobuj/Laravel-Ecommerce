@@ -47,6 +47,7 @@
                         Warehouse</a></li>
             </ul>
         </li>
+
         <li class="nav-item nav-item-submenu">
             <a href="#" class="nav-link">
                 <i class="icon-gift"></i>
@@ -61,6 +62,7 @@
                         Campaign</a></li> --}}
             </ul>
         </li>
+
         <li class="nav-item">
             <a href="{{ route('provider.pages.index') }}"
                 class="{{ request()->is('provider/pages.index*') ? 'nav-link active' : 'nav-link' }}">
@@ -68,6 +70,7 @@
                 <span>Pages</span>
             </a>
         </li>
+
         <li class="nav-item">
             <a href="{{ route('provider.pickUpPoint.index') }}"
                 class="{{ request()->is('provider/pickUpPoint.index*') ? 'nav-link active' : 'nav-link' }}">
@@ -75,5 +78,6 @@
                 <span>Pick-Up Point</span>
             </a>
         </li>
+
     </ul>
 </div>
