@@ -67,7 +67,7 @@
 
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="mb-0 float-start">WareHouse Table</h5>
+                        <h5 class="mb-0 float-start">Brand Table</h5>
                     </div>
 
                     <div class="table-responsive">

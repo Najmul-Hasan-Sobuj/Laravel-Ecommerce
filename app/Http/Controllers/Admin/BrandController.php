@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
 class BrandController extends Controller
@@ -153,7 +154,18 @@ class BrandController extends Controller
      */
     public function destroy($id)
     {
-        Brand::find($id)->delete();
+        $brand = Brand::find($id);
+
+        if (File::exists(public_path('storage/') . $brand->brand_logo)) {
+            File::delete(public_path('storage/') . $brand->brand_logo);
+        }
+        if (File::exists(public_path('storage/requestImg/') . $brand->brand_logo)) {
+            File::delete(public_path('storage/requestImg/') . $brand->brand_logo);
+        }
+        if (File::exists(public_path('storage/thumb/') . $brand->brand_logo)) {
+            File::delete(public_path('storage/thumb/') . $brand->brand_logo);
+        }
+        $brand->delete();
     }
 
     /**
@@ -165,8 +177,21 @@ class BrandController extends Controller
     public function multiDelete(Request $request)
     {
         $rowIds = $request->rowIds;
-        Brand::whereIn('id', $rowIds)->delete();
+        $brandMultiDelete = Brand::whereIn('id', $rowIds);
+        $selectedBrands = $brandMultiDelete->get();
 
+        foreach ($selectedBrands as $brand) {
+            if (File::exists(public_path('storage/') . $brand->brand_logo)) {
+                File::delete(public_path('storage/') . $brand->brand_logo);
+            }
+            if (File::exists(public_path('storage/requestImg/') . $brand->brand_logo)) {
+                File::delete(public_path('storage/requestImg/') . $brand->brand_logo);
+            }
+            if (File::exists(public_path('storage/thumb/') . $brand->brand_logo)) {
+                File::delete(public_path('storage/thumb/') . $brand->brand_logo);
+            }
+        }
+        $brandMultiDelete->delete();
         return response()->json("Selected Brand(s) deleted successfully.", 200);
     }
 }

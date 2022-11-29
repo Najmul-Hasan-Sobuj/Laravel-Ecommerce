@@ -43,6 +43,7 @@ class PickUpPointController extends Controller
                     return $btn;
                 })
                 ->rawColumns(['action', 'checkbox'])
+                // ->parameters(['buttons' => ['excel']])
                 ->make(true);
         }
         return view('admin.pickUpPoint.list');

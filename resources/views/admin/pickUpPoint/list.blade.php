@@ -156,6 +156,7 @@
                         searchable: false
                     },
                 ],
+
             });
 
             // Handle click on "Select all" control
