@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('address');
-            $table->string('phone_one');
-            $table->string('phone_two')->nullable();
+            $table->bigInteger('phone_one');
+            $table->bigInteger('phone_two')->nullable();
             $table->timestamps();
             $table->softDeletes(); // <-- This will add a deleted_at field
         });

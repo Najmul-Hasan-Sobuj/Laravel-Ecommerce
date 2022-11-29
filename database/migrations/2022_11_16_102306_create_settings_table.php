@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
             $table->string('currency')->nullable();
-            $table->string('phone_one')->nullable();
-            $table->string('phone_two')->nullable();
+            $table->bigInteger('phone_one')->nullable();
+            $table->bigInteger('phone_two')->nullable();
             $table->string('main_email')->nullable();
             $table->string('support_email')->nullable();
             $table->string('logo')->nullable();
