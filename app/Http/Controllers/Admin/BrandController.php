@@ -143,7 +143,87 @@ class BrandController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data['brand'] = Brand::find($id);
+        return view('admin.brand.update', $data);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        // dd($request->all());
+        Helper::imageDirectory();
+        $brand = Brand::find($id);
+        if (!empty($brand)) {
+            $validator =
+                [
+                    [
+                        'brand_name' => 'required|max:30',
+                        'photos.*'   => 'required|image|mimes:png,jpg,jpeg|max:5000',
+                    ],
+                    [
+                        'photos.*'    => [
+                            'max' => 'The image field must be smaller than 5 MB.',
+                        ],
+                        'image' => 'The file must be an image.',
+                        'mimes' => 'The: attribute must be a file of type: PNG - JPEG - JPG'
+                    ],
+                    [
+                        'brand_name' => 'Brand Name',
+                        'photos.*'   => 'Image',
+                    ],
+                ];
+        } else {
+            $validator =
+                [
+                    [
+                        'brand_name' => 'required|max:30',
+                    ],
+                    [
+                        'brand_name' => 'Brand Name',
+                    ],
+                ];
+        }
+        $validator = Validator::make($request->all(), $validator);
+
+        if ($validator->passes()) {
+            $mainFiles = $request->photos;
+            $uploadPath = storage_path('app/public/');
+            foreach ($mainFiles as $mainFile) {
+
+                if (isset($mainFile)) {
+                    $globalFunImg = Helper::multipleImageUpload($mainFile, $uploadPath, 230, 227);
+                } else {
+                    $globalFunImg['status'] = 0;
+                }
+
+                if (!empty($brand)) {
+                    if ($globalFunImg['status'] == 1) {
+                        File::delete(public_path($uploadPath . '/') . $brand->photos);
+                        File::delete(public_path($uploadPath . '/thumb/') . $brand->photos);
+                        File::delete(public_path($uploadPath . '/requestImg/') . $brand->photos);
+                    }
+
+                    $brand->update([
+                        'brand_name' => $request->brand_name,
+                        'brand_logo' => $globalFunImg['status'] == 1 ? $globalFunImg['file_name'] : $brand->photos,
+                    ]);
+                }
+            }
+
+            Toastr::success('Data has been updated');
+        } else {
+            $messages = $validator->messages();
+            foreach ($messages->all() as $message) {
+                Toastr::error($message, 'Failed', ['timeOut' => 30000]);
+            }
+        }
+        return redirect()->back();
     }
 
     /**
@@ -195,3 +275,11 @@ class BrandController extends Controller
         return response()->json("Selected Brand(s) deleted successfully.", 200);
     }
 }
+
+
+// brand_logos
+/**
+ * id
+ * brand_id
+ * brand_logo_name
+ */

@@ -50,6 +50,7 @@ class Helper
         $output['file_extention']     = $fileExtention;
         $output['file_size']          = $file_size;
 
+
         return $output;
     }
 
