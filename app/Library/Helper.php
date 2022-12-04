@@ -14,15 +14,15 @@ class Helper
     /**
      * generates the image path if the image path does not exist.
      */
-    public static function imageDirectory()
-    {
-        if (!File::isDirectory(storage_path("app/public/requestImg/"))) {
-            File::makeDirectory(storage_path("app/public/requestImg/", 0777, true, true));
-        }
-        if (!File::isDirectory(storage_path("app/public/thumb/"))) {
-            File::makeDirectory(storage_path("app/public/thumb/", 0777, true, true));
-        }
-    }
+    // public static function imageDirectory()
+    // {
+    //     if (!File::isDirectory(storage_path("app/public/requestImg/"))) {
+    //         File::makeDirectory(storage_path("app/public/requestImg/", 0777, true, true));
+    //     }
+    //     if (!File::isDirectory(storage_path("app/public/thumb/"))) {
+    //         File::makeDirectory(storage_path("app/public/thumb/", 0777, true, true));
+    //     }
+    // }
 
     /**
      * upload multiple images.
@@ -33,6 +33,13 @@ class Helper
      */
     public static function multipleImageUpload($mainFile, $imgPath, $reqWidth = false, $reqHeight = false)
     {
+        if (!File::isDirectory(storage_path("app/public/requestImg/"))) {
+            File::makeDirectory(storage_path("app/public/requestImg/", 0777, true, true));
+        }
+        if (!File::isDirectory(storage_path("app/public/thumb/"))) {
+            File::makeDirectory(storage_path("app/public/thumb/", 0777, true, true));
+        }
+
         $fileExtention    = $mainFile->getClientOriginalExtension();
         $fileOriginalName = $mainFile->getClientOriginalName();
         $file_size        = $mainFile->getSize();

@@ -68,8 +68,6 @@ class BrandController extends Controller
 
     public function store(Request $request)
     {
-        Helper::imageDirectory();
-
         $validator = Validator::make(
             $request->all(),
             [
@@ -93,27 +91,21 @@ class BrandController extends Controller
         if ($validator->passes()) {
             $mainFiles = $request->file('photos');
             $imgPath = storage_path('app/public/');
-            if (empty($mainFiles)) {
-                Brand::create([
-                    'brand_name' => $request->brand_name,
-                    'brand_slug' => Str::slug($request->brand_name, '-'),
-                ]);
-            } else {
-                foreach ($mainFiles as $mainFile) {
-                    $globalFunImg =  Helper::multipleImageUpload($mainFile, $imgPath, 230, 227);
-                    if ($globalFunImg['status'] == 1) {
-                        Brand::create([
-                            'brand_name' => $request->brand_name,
-                            'brand_slug' => Str::slug($request->brand_name, '-'),
-                            'brand_logo' => $globalFunImg['file_name'],
-                        ]);
-                    } else {
-                        $output['messege'] = $globalFunImg['errors'];
-                        Toastr::warning($output['messege']);
-                        return redirect()->back();
-                    }
+            $image_names = [];
+            foreach ($mainFiles as $mainFile) {
+                $globalFunImg =  Helper::multipleImageUpload($mainFile, $imgPath, 230, 227);
+                if ($globalFunImg['status'] == 1) {
+                    $image_names[] = $globalFunImg['file_name'];
+                } else {
+                    Toastr::warning("upload failed");
+                    return redirect()->back();
                 }
             }
+            Brand::create([
+                'brand_name' => $request->brand_name,
+                'brand_slug' => Str::slug($request->brand_name, '-'),
+                'brand_logo' => $image_names,
+            ]);
             Toastr::success('Data Inserted Successfully');
         } else {
             $messages = $validator->messages();
@@ -156,22 +148,20 @@ class BrandController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // dd($request->all());
-        Helper::imageDirectory();
         $brand = Brand::find($id);
         if (!empty($brand)) {
             $validator =
                 [
                     [
-                        'brand_name' => 'required|max:30',
-                        'photos.*'   => 'required|image|mimes:png,jpg,jpeg|max:5000',
+                        'brand_name' => 'required|max        : 30',
+                        'photos.*'   => 'required|image|mimes: png,jpg,jpeg|max                : 5000',
                     ],
                     [
-                        'photos.*'    => [
-                            'max' => 'The image field must be smaller than 5 MB.',
+                        'photos.*'   => [
+                            'max'    => 'The image field must be smaller than 5 MB.',
                         ],
-                        'image' => 'The file must be an image.',
-                        'mimes' => 'The: attribute must be a file of type: PNG - JPEG - JPG'
+                        'image'      => 'The file must be an image.',
+                        'mimes'      => 'The                 : attribute must be a file of type: PNG - JPEG - JPG'
                     ],
                     [
                         'brand_name' => 'Brand Name',
@@ -182,7 +172,7 @@ class BrandController extends Controller
             $validator =
                 [
                     [
-                        'brand_name' => 'required|max:30',
+                        'brand_name' => 'required|max: 30',
                     ],
                     [
                         'brand_name' => 'Brand Name',
@@ -248,12 +238,18 @@ class BrandController extends Controller
         $brand->delete();
     }
 
+
+
+
+
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+
     public function multiDelete(Request $request)
     {
         $rowIds = $request->rowIds;
