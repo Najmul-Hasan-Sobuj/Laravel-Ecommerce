@@ -19,7 +19,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.product.list');
     }
 
     /**
@@ -29,7 +29,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.product.create');
     }
 
     /**

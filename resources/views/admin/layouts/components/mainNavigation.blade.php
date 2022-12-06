@@ -79,5 +79,13 @@
             </a>
         </li>
 
+        <li class="nav-item">
+            <a href="{{ route('provider.product.index') }}"
+                class="{{ request()->is('provider/product.index*') ? 'nav-link active' : 'nav-link' }}">
+                <i class="icon-truck"></i>
+                <span>Product</span>
+            </a>
+        </li>
+
     </ul>
 </div>

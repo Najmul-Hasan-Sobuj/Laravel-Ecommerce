@@ -49,4 +49,7 @@ Route::group(['middleware' => ['isadmin', 'auth'], 'prefix' => 'provider', 'as' 
 
     Route::resource('pages', App\Http\Controllers\Admin\CreatePageController::class);
     Route::post('pages/multi-delete', [App\Http\Controllers\Admin\CreatePageController::class, 'multiDelete'])->name('pagesMultiDelete');
+
+    Route::resource('product', App\Http\Controllers\Admin\ProductController::class);
+    Route::post('product/multi-delete', [App\Http\Controllers\Admin\ProductController::class, 'multiDelete'])->name('productMultiDelete');
 });
