@@ -402,11 +402,7 @@
     <script src="{{ asset('backend/js/vendor/editors/ckeditor/ckeditor_classic.js') }}"></script>
     <script src="{{ asset('backend/js/vendor/forms/selects/bootstrap_multiselect.js') }}"></script>
 
-    <script src="{{ asset('backend/js/vendor/editors/summernote/summernote.min.js') }}"></script>
-
     <script src="{{ asset('backend/js/app.js') }}"></script>
-
-    <script src="{{ asset('backend/demo/pages/editor_summernote.js') }}"></script>
 
     <script src="{{ asset('backend/demo/pages/form_multiselect.js') }}"></script>
     <script src="{{ asset('backend/demo/pages/editor_ckeditor_classic.js') }}"></script>
