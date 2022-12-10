@@ -50,7 +50,8 @@
                                     </div>
 
                                     <div class="card-body">
-                                        <form action="{{ route('provider.categories.subCategory.store') }}" method="POST"
+                                        <form id="subCategoryForm"
+                                            action="{{ route('provider.categories.subCategory.store') }}" method="POST"
                                             class="from-prevent-multiple-submits">
                                             @csrf
                                             <div class="row mb-3">
@@ -94,12 +95,13 @@
                             </div>
 
                             <div class="card-body">
-                                <form action="{{ route('provider.categories.childCategory.store') }}" method="POST"
-                                    class="from-prevent-multiple-submits">
+                                <form id="childCategoryForm" action="{{ route('provider.categories.childCategory.store') }}"
+                                    method="POST" class="from-prevent-multiple-submits">
                                     @csrf
                                     <div class="row mb-3">
                                         <label class="form-label">Category: <span class="text-danger">*</span></label>
-                                        <select name="category_id" data-placeholder="Select your category name"
+                                        <select id="category_id" name="category_id"
+                                            data-placeholder="Select your category name"
                                             class="form-control form-control-select2" required>
                                             <option></option>
                                             @foreach ($categorys as $category)
@@ -109,13 +111,14 @@
                                     </div>
                                     <div class="row mb-3">
                                         <label class="form-label">Sub-Category: <span class="text-danger">*</span></label>
-                                        <select name="sub_category_id" data-placeholder="Select your sub category name"
-                                            class="form-control form-control-select2" required>
+                                        <select id="sub_category_id" name="sub_category_id"
+                                            data-placeholder="Select your sub category name"
+                                            class="form-control form-control-select2 sub_category_id" required>
                                             <option></option>
-                                            @foreach ($subCategorys as $subCategory)
+                                            {{-- @foreach ($subCategorys as $subCategory)
                                                 <option value="{{ $subCategory->id }}">{{ $subCategory->sub_category_name }}
                                                 </option>
-                                            @endforeach
+                                            @endforeach --}}
                                         </select>
                                     </div>
                                     <div class="mb-4">
@@ -153,3 +156,28 @@
     </div>
     <!-- /main content -->
 @endsection
+
+@once
+    @push('script')
+        <script type="text/javascript">
+            $(document).ready(function() {
+                // DIVISION WISE DISTRICT
+                $('#childCategoryForm').on('change', '#category_id', function() {
+                    let category_id = $(this).val();
+                    if (category_id) {
+                        $.ajax({
+                            url: "{{ route('provider.categories.subCategoryDropdown') }}",
+                            type: "GET",
+                            data: {
+                                category_id: category_id
+                            },
+                            success: function(response) {
+                                $("#childCategoryForm .sub_category_id").html(response);
+                            }
+                        });
+                    }
+                });
+            })
+        </script>
+    @endpush
+@endonce

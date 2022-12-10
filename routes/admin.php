@@ -25,6 +25,8 @@ Route::group(['middleware' => ['isadmin', 'auth'], 'prefix' => 'provider', 'as' 
         Route::post('category/multi-delete', [App\Http\Controllers\Admin\CategoryController::class, 'multiDelete'])->name('categoryMultiDelete');
 
         Route::resource('subCategory', App\Http\Controllers\Admin\subCategoryController::class);
+        Route::get('subCategoryDropdown', [App\Http\Controllers\Admin\subCategoryController::class, 'subCategoryDropdown'])->name('subCategoryDropdown');
+
         Route::resource('childCategory', App\Http\Controllers\Admin\childCategoryController::class);
     });
 

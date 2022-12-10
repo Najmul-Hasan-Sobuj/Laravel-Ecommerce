@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Helper;
+use DataTables;
+use App\Models\Product;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Brian2694\Toastr\Facades\Toastr;
-use DataTables;
-use Helper;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -85,6 +87,46 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $brand = Product::find($id);
+
+        if (File::exists(public_path('storage/') . $brand->brand_logo)) {
+            File::delete(public_path('storage/') . $brand->brand_logo);
+        }
+        if (File::exists(public_path('storage/requestImg/') . $brand->brand_logo)) {
+            File::delete(public_path('storage/requestImg/') . $brand->brand_logo);
+        }
+        if (File::exists(public_path('storage/thumb/') . $brand->brand_logo)) {
+            File::delete(public_path('storage/thumb/') . $brand->brand_logo);
+        }
+        $brand->delete();
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+
+
+    public function multiDelete(Request $request)
+    {
+        $rowIds = $request->rowIds;
+        $brandMultiDelete = Product::whereIn('id', $rowIds);
+        $selectedBrands = $brandMultiDelete->get();
+
+        foreach ($selectedBrands as $brand) {
+            if (File::exists(public_path('storage/') . $brand->brand_logo)) {
+                File::delete(public_path('storage/') . $brand->brand_logo);
+            }
+            if (File::exists(public_path('storage/requestImg/') . $brand->brand_logo)) {
+                File::delete(public_path('storage/requestImg/') . $brand->brand_logo);
+            }
+            if (File::exists(public_path('storage/thumb/') . $brand->brand_logo)) {
+                File::delete(public_path('storage/thumb/') . $brand->brand_logo);
+            }
+        }
+        $brandMultiDelete->delete();
+        return response()->json("Selected Brand(s) deleted successfully.", 200);
     }
 }

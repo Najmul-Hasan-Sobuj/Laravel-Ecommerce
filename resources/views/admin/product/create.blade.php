@@ -377,8 +377,6 @@
                     </div>
                 </form>
             </div>
-
-
         </div>
         <!-- /content area -->
 
@@ -394,7 +392,6 @@
 @endsection
 
 {{-- 
-description
 flash_deal_id
 cash_on_delivery
 admin_id --}}

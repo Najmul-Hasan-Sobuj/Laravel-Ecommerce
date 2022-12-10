@@ -161,7 +161,7 @@ class BrandController extends Controller
                             'max'    => 'The image field must be smaller than 5 MB.',
                         ],
                         'image'      => 'The file must be an image.',
-                        'mimes'      => 'The                 : attribute must be a file of type: PNG - JPEG - JPG'
+                        'mimes'      => 'The: attribute must be a file of type: PNG - JPEG - JPG'
                     ],
                     [
                         'brand_name' => 'Brand Name',
@@ -214,6 +214,36 @@ class BrandController extends Controller
             }
         }
         return redirect()->back();
+
+
+
+
+
+
+
+
+
+        $verb_id = $request->verb_id;
+
+        $predata = Brand::findorfail($id);
+        if ($predata != null) {
+            $arraydata = json_decode($predata->verb_id);
+            if ($request->uncheck == 1 && in_array($verb_id, $arraydata)) {
+
+                $removedata = array_search($verb_id, $arraydata);
+                unset($arraydata[$removedata]);
+
+                $final = array_values($arraydata);
+                $finaldata = json_encode($final);
+                // dd($finaldata);
+                Brand::valid()->find($predata->id)->update(['verb_id' => $finaldata]);
+            }
+            if ($request->uncheck != 1 && !in_array($verb_id, $arraydata)) {
+                array_push($arraydata, $verb_id);
+                $finaldata = json_encode($arraydata);
+                Brand::valid()->find($predata->id)->update(['verb_id' => $finaldata]);
+            }
+        }
     }
 
     /**
@@ -237,10 +267,6 @@ class BrandController extends Controller
         }
         $brand->delete();
     }
-
-
-
-
 
     /**
      * Store a newly created resource in storage.

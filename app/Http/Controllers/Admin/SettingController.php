@@ -106,8 +106,7 @@ class SettingController extends Controller
     public function webSettingUpdate(Request $request)
     {
 
-        // dd($request->all());
-        Helper::imageDirectory();
+
         $webSetting = Setting::first();
         if (!empty($webSetting)) {
             $validator =

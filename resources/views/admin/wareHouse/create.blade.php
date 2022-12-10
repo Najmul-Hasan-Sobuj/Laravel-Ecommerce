@@ -15,7 +15,7 @@
             <div class="content">
                 <div class="card">
                     <div class="card-header d-sm-flex align-items-sm-center">
-                        <h6 class="mb-sm-0">Brand Create Form</h6>
+                        <h6 class="mb-sm-0">WareHouse Create Form</h6>
                         <div class="ms-sm-auto">
                             <div class="hstack gap-3 justify-content-between">
                                 <label class="form-check form-switch form-check-reverse">

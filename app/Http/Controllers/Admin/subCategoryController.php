@@ -45,6 +45,12 @@ class subCategoryController extends Controller
         return view('admin.subCategory.list');
     }
 
+    public function subCategoryDropdown(Request $request)
+    {
+        $category_id = $request->category_id;
+        $data['subCategories'] = SubCategory::where('category_id', $category_id)->get();
+        return view('admin.subCategory.subCategoryOption', $data);
+    }
     /**
      * Show the form for creating a new resource.
      *
