@@ -13,7 +13,8 @@
 
             <!-- Content area -->
             <div class="content">
-                <form action="{{ route('provider.product.store') }}" method="POST" class="from-prevent-multiple-submits">
+                <form action="{{ route('provider.product.store') }}" method="POST"
+                    class="from-prevent-multiple-submits productForm" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
                         <div class="col-lg-8">
@@ -45,30 +46,61 @@
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-3">
                                             <div class="row mb-3">
                                                 <label class="form-label">Category: <span
                                                         class="text-danger">*</span></label>
-                                                <select name="category_id" data-placeholder="Select your category name"
+                                                <select id="category_id" name="category_id"
+                                                    data-placeholder="Select your category name"
                                                     class="form-control form-control-select2" required>
                                                     <option></option>
-                                                    {{-- @foreach ($categorys as $category)
-                                                <option value="{{ $category->id }}">{{ $category->category_name }}
-                                                </option>
-                                            @endforeach --}}
+                                                    @foreach ($categorys as $category)
+                                                        <option value="{{ $category->id }}">{{ $category->category_name }}
+                                                        </option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-3">
+                                            <div class="row mb-3">
+                                                <label class="form-label">Sub-Category: <span
+                                                        class="text-danger">*</span></label>
+                                                <select id="child_category_id" name="sub_category_id"
+                                                    data-placeholder="Select your sub category name"
+                                                    class="form-control form-control-select2 sub_category_id" required>
+                                                    <option>dd</option>
+                                                    {{-- @foreach ($subCategorys as $subCategory)
+                                                        <option value="{{ $subCategory->id }}">{{ $subCategory->sub_category_name }}
+                                                        </option>
+                                                    @endforeach --}}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="row mb-3">
+                                                <label class="form-label">Child-Category: <span
+                                                        class="text-danger">*</span></label>
+                                                <select id="child_category_id" name="child_category_id"
+                                                    data-placeholder="Select your child category name"
+                                                    class="form-control form-control-select2 child_category_id" required>
+                                                    <option></option>
+                                                    {{-- @foreach ($subCategorys as $subCategory)
+                                                        <option value="{{ $subCategory->id }}">{{ $subCategory->sub_category_name }}
+                                                        </option>
+                                                    @endforeach --}}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
                                             <div class="row mb-3">
                                                 <label class="form-label">Brand: <span class="text-danger">*</span></label>
                                                 <select name="brand" data-placeholder="Select your Brand name"
                                                     class="form-control form-control-select2" required>
                                                     <option></option>
-                                                    {{-- @foreach ($categorys as $category)
-                                                <option value="{{ $category->id }}">{{ $category->category_name }}
-                                                </option>
-                                            @endforeach --}}
+                                                    @foreach ($brands as $brands)
+                                                        <option value="{{ $brands->id }}">{{ $brands->brand_name }}
+                                                        </option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>
@@ -395,3 +427,53 @@
 flash_deal_id
 cash_on_delivery
 admin_id --}}
+
+
+@once
+    @push('script')
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $(".productForm .sub_category_id").select2({
+                    placeholder: "Select Sub"
+                });
+                $('.productForm').on('change', '#category_id', function() {
+                    let category_id = $(this).val();
+                    if (category_id) {
+                        $.ajax({
+                            url: "{{ route('provider.subCategoryProductDropdown') }}",
+                            type: "GET",
+                            data: {
+                                category_id: category_id
+                            },
+                            success: function(response) {
+                                $(".productForm .sub_category_id").html(response);
+                                $(".productForm .sub_category_id").select2({
+                                    placeholder: "Select Sub"
+                                });
+                            }
+                        });
+                    }
+                });
+
+                $('.productForm').on('change', '.sub_category_id', function() {
+                    let sub_category_id = $(this).val();
+                    if (sub_category_id) {
+                        $.ajax({
+                            url: "{{ route('provider.childCategoryProductDropdown') }}",
+                            type: "GET",
+                            data: {
+                                sub_category_id: sub_category_id
+                            },
+                            success: function(response) {
+                                $(".productForm .child_category_id").html(response);
+                                $(".productForm .child_category_id").select2({
+                                    placeholder: "Select"
+                                });
+                            }
+                        });
+                    }
+                });
+            })
+        </script>
+    @endpush
+@endonce

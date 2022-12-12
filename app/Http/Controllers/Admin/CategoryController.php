@@ -57,7 +57,6 @@ class CategoryController extends Controller
     public function create()
     {
         $data['categorys'] = Category::select('categories.id', 'categories.category_name')->get();
-        // $data['subCategorys'] = SubCategory::select('sub_categories.id', 'sub_categories.sub_category_name')->get();
         return view('admin.category.create', $data);
     }
 

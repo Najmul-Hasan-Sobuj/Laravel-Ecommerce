@@ -68,6 +68,7 @@ class BrandController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->all());
         $validator = Validator::make(
             $request->all(),
             [
@@ -87,7 +88,6 @@ class BrandController extends Controller
                 'photos.*'   => 'Image',
             ],
         );
-
         if ($validator->passes()) {
             $mainFiles = $request->file('photos');
             $imgPath = storage_path('app/public/');

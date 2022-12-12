@@ -54,4 +54,6 @@ Route::group(['middleware' => ['isadmin', 'auth'], 'prefix' => 'provider', 'as' 
 
     Route::resource('product', App\Http\Controllers\Admin\ProductController::class);
     Route::post('product/multi-delete', [App\Http\Controllers\Admin\ProductController::class, 'multiDelete'])->name('productMultiDelete');
+    Route::get('subCategoryProductDropdown', [App\Http\Controllers\Admin\ProductController::class, 'subCategoryProductDropdown'])->name('subCategoryProductDropdown');
+    Route::get('childCategoryProductDropdown', [App\Http\Controllers\Admin\ProductController::class, 'childCategoryProductDropdown'])->name('childCategoryProductDropdown');
 });

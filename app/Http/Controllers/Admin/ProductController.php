@@ -5,9 +5,13 @@ namespace App\Http\Controllers\Admin;
 use Helper;
 use DataTables;
 use App\Models\Product;
+use App\Models\Category;
+use App\Models\SubCategory;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Brand;
+use App\Models\ChildCategory;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
@@ -24,6 +28,21 @@ class ProductController extends Controller
         return view('admin.product.list');
     }
 
+    public function subCategoryProductDropdown(Request $request)
+    {
+        $category_id = $request->category_id;
+        $data['subCategories'] = SubCategory::where('category_id', $category_id)->get();
+        return view('admin.subCategory.subCategoryOption', $data);
+    }
+
+    public function childCategoryProductDropdown(Request $request)
+    {
+        $sub_category_id = $request->sub_category_id;
+        // dd($sub_category_id);
+        $data['childCategories'] = ChildCategory::where('sub_category_id', $sub_category_id)->get();
+        return view('admin.subCategory.childCategoryOption', $data);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -31,7 +50,9 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('admin.product.create');
+        $data['categorys'] = Category::select('categories.id', 'categories.category_name')->get();
+        $data['brands'] = Brand::select('brands.id', 'brands.brand_name')->get();
+        return view('admin.product.create', $data);
     }
 
     /**

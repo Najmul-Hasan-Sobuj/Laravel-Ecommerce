@@ -401,9 +401,10 @@
     <script src="{{ asset('backend/js/vendor/notifications/sweet_alert.min.js') }}"></script>
     <script src="{{ asset('backend/js/vendor/editors/ckeditor/ckeditor_classic.js') }}"></script>
     <script src="{{ asset('backend/js/vendor/forms/selects/bootstrap_multiselect.js') }}"></script>
-
+    <script src="{{ asset('backend/js/vendor/uploaders/fileinput/fileinput.min.js') }}"></script>
+    <script src="{{ asset('backend/js/vendor/uploaders/fileinput/plugins/sortable.min.js') }}"></script>
     <script src="{{ asset('backend/js/app.js') }}"></script>
-
+    <script src="{{ asset('backend/demo/pages/uploader_bootstrap.js') }}"></script>
     <script src="{{ asset('backend/demo/pages/form_multiselect.js') }}"></script>
     <script src="{{ asset('backend/demo/pages/editor_ckeditor_classic.js') }}"></script>
     <script src="{{ asset('backend/demo/pages/form_select2.js') }}"></script>

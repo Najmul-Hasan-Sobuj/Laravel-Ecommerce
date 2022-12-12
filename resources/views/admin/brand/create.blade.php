@@ -52,12 +52,14 @@
                                                             class="text-danger">*</span></label>
                                                     <input type="text" id="brand_name" name="brand_name"
                                                         class="form-control maxlength-options" maxlength="40"
-                                                        placeholder="Enter Your Brand Name" required>
+                                                        placeholder="Enter Your Brand Name">
                                                 </div>
 
                                                 <div class="mb-4">
-                                                    <label class="col-form-label">Brand Logo: </label>
+                                                    <label class="form-label">Brand Logo: </label>
                                                     <input type="file" class="form-control" name="photos[]" multiple>
+                                                    {{-- <input type="file" class="file-input-ajax" name="photos[]"
+                                                        multiple="multiple"> --}}
                                                     <div class="form-text"><span class="text-danger">Accepts only png, jpeg,
                                                             jpg types</span></div>
                                                 </div>

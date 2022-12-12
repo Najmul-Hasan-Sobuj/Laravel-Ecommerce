@@ -58,11 +58,23 @@
                                                 </div>
 
                                                 <div class="mb-4">
+                                                    @php
+                                                        $brand_logo = json_decode($brand->brand_logo);
+                                                    @endphp
+                                                    @foreach ($brand_logo as $item)
+                                                        <img src="{{ asset('storage/thumb/' . $item) }}" alt="abc"
+                                                            class="img-responsive"> <br>
+                                                    @endforeach
+                                                </div>
+
+                                                <div class="mb-4">
                                                     <label class="col-form-label">Brand Logo: </label>
-                                                    <input type="file" class="form-control" name="photos[]" multiple>
+                                                    <input id="file-input" type="file" class="form-control"
+                                                        name="photos[]" multiple>
                                                     <div class="form-text"><span class="text-danger">Accepts only png, jpeg,
                                                             jpg types</span></div>
                                                 </div>
+                                                <img id="preview" src="" alt="">
 
                                                 <div class="text-end">
                                                     <button type="reset" class="btn btn-danger">Reset<i
@@ -96,3 +108,11 @@
     </div>
     <!-- /main content -->
 @endsection
+
+@once
+    @push('script')
+        <script type="text/javascript">
+            let brand_logos = $('#brand_logo').val();
+        </script>
+    @endpush
+@endonce
