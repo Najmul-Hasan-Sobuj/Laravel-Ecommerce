@@ -38,7 +38,6 @@ class ProductController extends Controller
     public function childCategoryProductDropdown(Request $request)
     {
         $sub_category_id = $request->sub_category_id;
-        // dd($sub_category_id);
         $data['childCategories'] = ChildCategory::where('sub_category_id', $sub_category_id)->get();
         return view('admin.subCategory.childCategoryOption', $data);
     }

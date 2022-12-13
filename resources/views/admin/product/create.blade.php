@@ -65,14 +65,11 @@
                                             <div class="row mb-3">
                                                 <label class="form-label">Sub-Category: <span
                                                         class="text-danger">*</span></label>
-                                                <select id="child_category_id" name="sub_category_id"
+                                                <select id="sub_category_id" name="sub_category_id"
                                                     data-placeholder="Select your sub category name"
                                                     class="form-control form-control-select2 sub_category_id" required>
-                                                    <option>dd</option>
-                                                    {{-- @foreach ($subCategorys as $subCategory)
-                                                        <option value="{{ $subCategory->id }}">{{ $subCategory->sub_category_name }}
-                                                        </option>
-                                                    @endforeach --}}
+                                                    <option></option>
+                                                    {{-- data load daynamicaly --}}
                                                 </select>
                                             </div>
                                         </div>
@@ -84,10 +81,7 @@
                                                     data-placeholder="Select your child category name"
                                                     class="form-control form-control-select2 child_category_id" required>
                                                     <option></option>
-                                                    {{-- @foreach ($subCategorys as $subCategory)
-                                                        <option value="{{ $subCategory->id }}">{{ $subCategory->sub_category_name }}
-                                                        </option>
-                                                    @endforeach --}}
+                                                    {{-- data load daynamicaly --}}
                                                 </select>
                                             </div>
                                         </div>
@@ -433,9 +427,6 @@ admin_id --}}
     @push('script')
         <script type="text/javascript">
             $(document).ready(function() {
-                $(".productForm .sub_category_id").select2({
-                    placeholder: "Select Sub"
-                });
                 $('.productForm').on('change', '#category_id', function() {
                     let category_id = $(this).val();
                     if (category_id) {
@@ -447,15 +438,12 @@ admin_id --}}
                             },
                             success: function(response) {
                                 $(".productForm .sub_category_id").html(response);
-                                $(".productForm .sub_category_id").select2({
-                                    placeholder: "Select Sub"
-                                });
                             }
                         });
                     }
                 });
 
-                $('.productForm').on('change', '.sub_category_id', function() {
+                $('.productForm').on('change', '#sub_category_id', function() {
                     let sub_category_id = $(this).val();
                     if (sub_category_id) {
                         $.ajax({
@@ -466,9 +454,6 @@ admin_id --}}
                             },
                             success: function(response) {
                                 $(".productForm .child_category_id").html(response);
-                                $(".productForm .child_category_id").select2({
-                                    placeholder: "Select"
-                                });
                             }
                         });
                     }

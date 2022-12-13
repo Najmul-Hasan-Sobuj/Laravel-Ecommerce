@@ -1,6 +1,45 @@
 @extends('admin.layouts.app')
 
 @section('admincontent')
+    <style>
+        .wrapper-thumb {
+            position: relative;
+            display: inline-block;
+            margin: 1rem 0;
+            justify-content: space-around;
+        }
+
+        .img-preview-thumb {
+            background: #fff;
+            border: 1px solid none;
+            border-radius: 0.25rem;
+            box-shadow: 0.125rem 0.125rem 0.0625rem rgba(0, 0, 0, 0.12);
+            margin-right: 1rem;
+            max-width: 140px;
+            padding: 0.25rem;
+        }
+
+        .remove-btn {
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: .7rem;
+            top: -5px;
+            right: 10px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .remove-btn:hover {
+            box-shadow: 0px 0px 3px grey;
+            transition: all .3s ease-in-out;
+        }
+    </style>
     <!-- Main content -->
     <div class="content-wrapper">
 
@@ -44,8 +83,9 @@
                                 <div class="col-lg-8 offset-lg-2">
                                     <div class="card mt-3">
                                         <div class="card-body">
-                                            <form action="{{ route('provider.brand.store') }}" method="POST"
-                                                enctype="multipart/form-data" class="from-prevent-multiple-submits">
+                                            <form id="form-upload" action="{{ route('provider.brand.store') }}"
+                                                method="POST" enctype="multipart/form-data"
+                                                class="from-prevent-multiple-submits">
                                                 @csrf
                                                 <div class="mb-4">
                                                     <label class="form-label">Brand Name: <span
@@ -56,14 +96,17 @@
                                                 </div>
 
                                                 <div class="mb-4">
-                                                    <label class="form-label">Brand Logo: </label>
-                                                    <input type="file" class="form-control" name="photos[]" multiple>
                                                     {{-- <input type="file" class="file-input-ajax" name="photos[]"
                                                         multiple="multiple"> --}}
+                                                    <label class="form-label">Brand Logo: </label>
+                                                    <input id="upload-img" type="file" class="form-control"
+                                                        name="photos[]" multiple>
                                                     <div class="form-text"><span class="text-danger">Accepts only png, jpeg,
                                                             jpg types</span></div>
+                                                    <div class="bg-light border-1 rounded mx-1 my-1 px-1 py-1 d-none"
+                                                        id="img-preview">
+                                                    </div>
                                                 </div>
-
                                                 <div class="text-end">
                                                     <button type="reset" class="btn btn-danger">Reset<i
                                                             class="icon-reset"></i></button>
@@ -96,3 +139,43 @@
     </div>
     <!-- /main content -->
 @endsection
+
+
+@push('script')
+    <script type="text/javascript">
+        var imgUpload = document.getElementById('upload-img'),
+            imgPreview = document.getElementById('img-preview'),
+            imgUploadForm = document.getElementById('form-upload'),
+            totalFiles, previewTitle, previewTitleText, img;
+
+        imgUpload.addEventListener('change', previewImgs, true);
+
+        function previewImgs(event) {
+            totalFiles = imgUpload.files.length;
+
+            if (!!totalFiles) {
+                imgPreview.classList.remove('d-none');
+            }
+
+            for (var i = 0; i < totalFiles; i++) {
+                wrapper = document.createElement('div');
+                wrapper.classList.add('wrapper-thumb');
+                removeBtn = document.createElement("span");
+                nodeRemove = document.createTextNode('x');
+                removeBtn.classList.add('remove-btn');
+                removeBtn.appendChild(nodeRemove);
+                img = document.createElement('img');
+                img.src = URL.createObjectURL(event.target.files[i]);
+                img.classList.add('img-preview-thumb');
+                wrapper.appendChild(img);
+                wrapper.appendChild(removeBtn);
+                imgPreview.appendChild(wrapper);
+
+                $('.remove-btn').click(function() {
+                    $(this).parent('.wrapper-thumb').remove();
+                });
+
+            }
+        }
+    </script>
+@endpush

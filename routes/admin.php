@@ -41,7 +41,6 @@ Route::group(['middleware' => ['isadmin', 'auth'], 'prefix' => 'provider', 'as' 
 
     Route::resource('pickUpPoint', App\Http\Controllers\Admin\PickUpPointController::class);
     Route::post('pickUpPoint/multi-delete', [App\Http\Controllers\Admin\PickUpPointController::class, 'multiDelete'])->name('pickUpPointMultiDelete');
-    // Route::post('sample/export', 'SampleController@index');
 
     // all account settings
     Route::get('settings', [App\Http\Controllers\Admin\SettingController::class, 'accountSetting'])->name('admin.accountSetting');
