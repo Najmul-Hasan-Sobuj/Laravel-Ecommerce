@@ -2,6 +2,18 @@
 
 @section('admincontent')
     <style>
+        /* .img-thumbs {
+                background: #eee;
+                border: 1px solid #ccc;
+                border-radius: 0.25rem;
+                margin: 1.5rem 0;
+                padding: 0.75rem;
+            }
+
+            .img-thumbs-hidden {
+                display: none;
+            } */
+
         .wrapper-thumb {
             position: relative;
             display: inline-block;
